@@ -20,8 +20,6 @@ class UserController extends BaseController
 
 	public function info()
 	{
-		$keys = $this->redis->keys('*');
 
-		var_dump($keys);
 	}
 }

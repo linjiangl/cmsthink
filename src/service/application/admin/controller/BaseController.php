@@ -21,18 +21,6 @@ class BaseController extends Controller
 	 */
 	protected $user = [];
 
-	/**
-	 * redis实例
-	 * @var \Redis
-	 */
-	protected $redis = null;
-
-	/**
-	 * 当前时间戳
-	 * @var int
-	 */
-	protected $nowTime = 0;
-
 	protected $beforeActionList = [
 		'init',
 	];
@@ -40,14 +28,11 @@ class BaseController extends Controller
 	public function init()
 	{
 		$this->isLogin();
-
-		$this->redis = new \Redis();
-		$this->redis->connect(Env::get('redis.host'), Env::get('redis.port'));
-
-		$now = $this->redis->time();
-		$this->nowTime = $now[0];
 	}
 
+	/**
+	 * 判断是否登录
+	 */
 	public function isLogin()
 	{
 		$authKey = $this->request->request('auth_key', '', 'trim');
