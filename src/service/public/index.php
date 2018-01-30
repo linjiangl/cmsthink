@@ -12,6 +12,24 @@
 // [ 应用入口文件 ]
 namespace think;
 
+header('X-Frame-Options: deny');
+$origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
+$allowOrigin = [
+	'http://localhost:8111',
+	'http://admin.tp.app'
+];
+if (in_array($origin, $allowOrigin)) {
+	header("Access-Control-Allow-Origin: {$origin}");
+	header("Access-Control-Allow-Methods: *");
+	header("Access-Control-Request-Headers: *");
+	header("Access-Control-Allow-Credentials: true");
+	header("Access-Control-Max-Age: 86400");
+	header("Access-Control-Allow-Headers: x-requested-with,content-type");
+}
+if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+	exit;
+}
+
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php';
 
