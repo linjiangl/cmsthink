@@ -10,6 +10,8 @@
 namespace app\admin\controller;
 
 
+use app\common\model\MenuModel;
+
 class UserController extends BaseController
 {
 	public function __construct()
@@ -20,6 +22,14 @@ class UserController extends BaseController
 
 	public function info()
 	{
+		$menuModel = new MenuModel();
+//
+//		$menus = $menuModel->getMenus(2, 1);
+//
+//		print_r($menus);
 
+		$info = $menuModel->with('actions')->where('pid', 1)->select()->toArray();
+
+		print_r($info);
 	}
 }

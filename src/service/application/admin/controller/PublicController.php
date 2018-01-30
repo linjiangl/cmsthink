@@ -9,7 +9,6 @@
 
 namespace app\admin\controller;
 
-use app\common\cache\AuthCache;
 use app\common\service\UserService;
 use think\Controller;
 
@@ -79,9 +78,6 @@ class PublicController extends Controller
 		if ($authKey === false) {
 			http_error($serUser->getCode(), $serUser->getError());
 		} else {
-			$authCache = new AuthCache();
-			$authCache->setAuth($authKey, $serUser->infoByAuthKey($authKey));
-
 			http_ok($authKey);
 		}
 	}

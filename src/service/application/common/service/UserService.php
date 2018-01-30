@@ -1,16 +1,10 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: linJiangL
- * Mail: 8257796@qq.com
- * Date: 2018/1/26
- * Time: 上午11:21
- */
 
 namespace app\common\service;
 
 use app\common\model\UserModel;
 use app\common\validate\UserValidate;
+use app\common\cache\AuthCache;
 
 class UserService extends BaseService
 {
@@ -82,8 +76,15 @@ class UserService extends BaseService
 		// 每次登录更新auth_key
 		$authKey = $userModel->generateAuthKey();
 		if ($info->save(['auth_key' => $authKey])) {
-			$this->loginAction($info['id']);
 			$this->setHttpMsg(self::OK);
+
+			//记录行为
+			$this->loginAction($info['id']);
+
+			//记录登录状态,检查登录用
+			$authCache = new AuthCache();
+			$authCache->setAuth($authKey, $info);
+
 			return $authKey;
 		} else {
 			$this->setHttpMsg(self::BAD_REQUEST, '登录失败');
