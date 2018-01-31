@@ -1,7 +1,6 @@
 <template>
   <div style="border-bottom: solid 1px #e6e6e6">
-
-    <el-menu class="navbar" mode="horizontal">
+    <el-menu class="navbar" mode="horizontal" :default-active="activeIndex" @select="handleSelect">
       <el-menu-item index="1">处理中心</el-menu-item>
       <el-menu-item index="2">处理中心</el-menu-item>
 
@@ -23,7 +22,7 @@
       </el-dropdown>
     </el-menu>
 
-    <breadcrumb style="line-height: 22px; margin-left: 20px;"></breadcrumb>
+    <breadcrumb style="line-height: 22px; margin-left: 18px;"></breadcrumb>
   </div>
 
 </template>
@@ -41,11 +40,19 @@
         'avatar'
       ])
     },
+    data() {
+      return {
+        activeIndex: '1'
+      };
+    },
     methods: {
       logout() {
         this.$store.dispatch('LogOut').then(() => {
           location.reload() // 为了重新实例化vue-router对象 避免bug
         })
+      },
+      handleSelect(key, keyPath) {
+        console.log(key, keyPath);
       }
     }
   }
