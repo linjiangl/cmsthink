@@ -8,7 +8,11 @@
 
 namespace app\common\model;
 
-
+/**
+ * Class MenuActionModel
+ *
+ * @package app\common\model
+ */
 class MenuActionModel extends BaseModel
 {
 	protected $pk = 'id';

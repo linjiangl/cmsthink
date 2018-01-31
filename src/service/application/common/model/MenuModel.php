@@ -8,7 +8,11 @@
 
 namespace app\common\model;
 
-
+/**
+ * Class MenuModel
+ *
+ * @package app\common\model
+ */
 class MenuModel extends BaseModel
 {
 	const STATUS_NORMAL = 1;

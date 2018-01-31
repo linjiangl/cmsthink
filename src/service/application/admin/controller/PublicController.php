@@ -10,9 +10,8 @@
 namespace app\admin\controller;
 
 use app\common\service\UserService;
-use think\Controller;
 
-class PublicController extends Controller
+class PublicController extends BaseController
 {
 
 	/**

@@ -8,7 +8,11 @@
 
 namespace app\common\model;
 
-
+/**
+ * Class AuthGroupModel
+ *
+ * @package app\common\model
+ */
 class AuthGroupModel extends BaseModel
 {
 	protected $pk = 'id';
