@@ -15,7 +15,7 @@ namespace think;
 header('X-Frame-Options: deny');
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 $allowOrigin = [
-	'http://localhost:8111',
+	'http://localhost:8089',
 	'http://admin.tp.app'
 ];
 if (in_array($origin, $allowOrigin)) {

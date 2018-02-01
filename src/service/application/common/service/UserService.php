@@ -74,6 +74,7 @@ class UserService extends BaseService
 		}
 
 		// 每次登录更新auth_key
+		$oldAuthKey = $info['auth_key'];
 		$authKey = $userModel->generateAuthKey();
 		if ($info->save(['auth_key' => $authKey])) {
 			$this->setHttpMsg(self::OK);
@@ -81,9 +82,13 @@ class UserService extends BaseService
 			//记录行为
 			$this->loginAction($info['id']);
 
+			//头像
+			$info['avatar'] = $info['avatar'] ? : generate_avatar($info['nickname']);
+
 			//记录登录状态,检查登录用
 			$authCache = new AuthCache();
-			$authCache->setAuth($authKey, $info);
+			$authCache->setAuth($authKey, $info->toArray());
+			$authCache->rmAuth($oldAuthKey);
 
 			return $authKey;
 		} else {
@@ -154,6 +159,10 @@ class UserService extends BaseService
 
 		$userModel = new UserModel();
 		$info = $userModel->where($where)->find();
+		if ($info) {
+			$info['avatar'] = $info['avatar'] ? : generate_avatar($info['nickname']);
+		}
+
 		return $info ? $info->toArray() : [];
 	}
 

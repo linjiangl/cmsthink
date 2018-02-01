@@ -34,7 +34,7 @@ class AuthController extends Controller
 	 */
 	public function isLogin()
 	{
-		$authKey = $this->request->request('auth_key', '', 'trim');
+		$authKey = $this->request->request('auth_token', '', 'trim');
 		$authCache = new AuthCache();
 		if ($user = $authCache->getAuth($authKey)) {
 			$this->user = $user;

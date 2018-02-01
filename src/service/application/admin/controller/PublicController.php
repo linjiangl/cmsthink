@@ -10,6 +10,7 @@
 namespace app\admin\controller;
 
 use app\common\service\UserService;
+use Md\MDAvatars;
 
 class PublicController extends BaseController
 {
@@ -81,8 +82,25 @@ class PublicController extends BaseController
 		}
 	}
 
-	public function _empty()
+	public function avatar()
 	{
-		http_error(404, 'Not Found');
+		$txt = $this->request->get('char', 'O', 'trim');
+		$size = $this->request->get('size', 96, 'intval');
+		$txt = mb_substr($txt, 0, 1);
+		$size = $size < 24 ? 24 : $size;
+
+		$avatar = new MDAvatars($txt, $size);
+
+		ob_start();
+		$avatar->Output2Browser();
+		$content = ob_get_clean();
+		$avatar->Free();
+
+		return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
+	}
+
+	public function aa()
+	{
+		echo generate_avatar('s');
 	}
 }

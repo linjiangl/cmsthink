@@ -1,10 +1,25 @@
 <?php
 
+function generate_avatar($char, $size = 96)
+{
+	return url('admin/public/avatar', "char={$char}&size={$size}", false, config('url_domain_admin'));
+}
+
+/**
+ * 接口错误返回
+ * @param $code
+ * @param string $msg
+ */
 function http_error($code, $msg = '')
 {
 	json(['error' => $msg])->code($code)->send();
 }
 
+/**
+ * 接口正确返回
+ * @param $data
+ * @param int $code
+ */
 function http_ok($data, $code = 200)
 {
 	json($data)->code($code)->send();

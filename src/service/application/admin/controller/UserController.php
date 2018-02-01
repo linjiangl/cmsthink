@@ -14,6 +14,13 @@ class UserController extends AuthController
 
 	public function info()
 	{
-		http_ok(['id' => 1, 'name' => '343434']);
+		//$token = $this->request->get('auth_token');
+		http_ok($this->user);
+	}
+
+	public function test()
+	{
+
+		http_ok([$this->request->get()]);
 	}
 }
