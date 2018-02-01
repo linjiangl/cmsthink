@@ -125,28 +125,28 @@ class BaseService
 		511 => 'Network Authentication Required'
 	];
 
-	protected $error = '';
+	protected static $error = '';
 
-	protected $code = '';
+	protected static $code = '';
 
-	public function getError()
+	public static function getError()
 	{
-		return $this->error;
+		return self::$error;
 	}
 
-	public function getCode()
+	public static function getCode()
 	{
-		return $this->code;
+		return self::$code;
 	}
 
-	public function setHttpMsg($code, $error = '')
+	public static function setHttpMsg($code, $error = '')
 	{
-		$this->code = $code;
+		self::$code = $code;
 
 		if ($error) {
-			$this->error = $error;
+			self::$error = $error;
 		} else {
-			$this->error = self::$codes[$code] ? : '未知错误';
+			self::$error = self::$codes[$code] ? : '未知错误';
 		}
 	}
 }

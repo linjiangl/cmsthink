@@ -19,7 +19,7 @@ class MenuService extends BaseService
 	 * @param int $status
 	 * @return array
 	 */
-	public function getMenus($pid = 0, $status = 0)
+	public static function getMenus($pid = 0, $status = 0)
 	{
 		$model = new MenuModel();
 		return $model->getMenus($pid, $status);
@@ -30,7 +30,7 @@ class MenuService extends BaseService
 	 * @param $menuId
 	 * @return array
 	 */
-	public function menuActions($menuId)
+	public static function menuActions($menuId)
 	{
 		$model = new MenuModel();
 		return $model->with('actions')->find($menuId)->toArray();
@@ -41,7 +41,7 @@ class MenuService extends BaseService
 	 * @param $pid
 	 * @return array
 	 */
-	public function childMenuActions($pid)
+	public static function childMenuActions($pid)
 	{
 		$model = new MenuModel();
 		return $model->with('actions')->where('pid', $pid)->select()->toArray();

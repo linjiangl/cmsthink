@@ -17,11 +17,15 @@ class BaseCache
     /**
      * 缓存周期
      */
-    protected $expiry = 3600;
+    protected static $expiry = 3600;
 
-    public function __construct()
+	protected $beforeActionList = [
+		'init',
+	];
+
+	public static function init()
 	{
-		$this->expiry = Config::get("cache.expire");
+		self::$expiry = Config::get("cache.expire");
 	}
 
 	/**
@@ -36,7 +40,7 @@ class BaseCache
         switch ($type) {
             case 'set':
                 $result = $data;
-                Cache::set($index, $data, $this->expiry);
+                Cache::set($index, $data, self::$expiry);
                 break;
             case 'del':
                 $result = Cache::rm($index);

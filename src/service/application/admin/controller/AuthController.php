@@ -20,6 +20,8 @@ class AuthController extends Controller
 	 */
 	protected $user = [];
 
+	protected $authKey = '';
+
 	protected $beforeActionList = [
 		'init',
 	];
@@ -35,6 +37,7 @@ class AuthController extends Controller
 	public function isLogin()
 	{
 		$authKey = $this->request->request('auth_token', '', 'trim');
+		$this->authKey = $authKey;
 		$authCache = new AuthCache();
 		if ($user = $authCache->getAuth($authKey)) {
 			$this->user = $user;

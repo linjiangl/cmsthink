@@ -13,22 +13,22 @@ use think\facade\Cache;
 
 class AuthCache extends BaseCache
 {
-	public function setAuth($authKey, $user)
+	public static function setAuth($authKey, $user)
 	{
 		$index = "user:auth_key:" . $authKey;
-		Cache::set($index, $user, $this->expiry);
+		Cache::set($index, $user, self::$expiry);
 		return $authKey;
 	}
 
-	public function getAuth($authKey)
+	public static function getAuth($authKey)
 	{
 		$index = "user:auth_key:" . $authKey;
 		return Cache::get($index);
 	}
 
-	public function rmAuth($authKey)
+	public static function rmAuth($authKey)
 	{
 		$index = "user:auth_key:" . $authKey;
-		Cache::rm($index);
+		return Cache::rm($index);
 	}
 }

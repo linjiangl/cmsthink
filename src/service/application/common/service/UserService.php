@@ -16,27 +16,27 @@ class UserService extends BaseService
 	 * @param string $nickname
 	 * @return bool|string
 	 */
-	public function register($username, $password, $nickname = '')
+	public static function register($username, $password, $nickname = '')
 	{
 		$data = [
 			'username' => $username,
 			'password' => $password,
-			'nickname' => $this->generateNickname($nickname)
+			'nickname' => self::generateNickname($nickname)
 		];
 
 		$validate = new UserValidate();
 		if (!$validate->scene('register')->check($data)) {
-			$this->setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
+			self::setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
 			return false;
 		}
 
 		$userModel = new UserModel();
 		$insId = $userModel->add($data);
 		if ($insId === false) {
-			$this->setHttpMsg(self::BAD_REQUEST, '注册失败');
+			self::setHttpMsg(self::BAD_REQUEST, '注册失败');
 			return false;
 		} else {
-			$this->setHttpMsg(self::CREATED);
+			self::setHttpMsg(self::CREATED);
 			return $insId;
 		}
 	}
@@ -48,7 +48,7 @@ class UserService extends BaseService
 	 * @param $password
 	 * @return bool|string
 	 */
-	public function login($username, $password)
+	public static function login($username, $password)
 	{
 		$data = [
 			'username' => $username,
@@ -57,7 +57,7 @@ class UserService extends BaseService
 
 		$validate = new UserValidate();
 		if (!$validate->scene('login')->check($data)) {
-			$this->setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
+			self::setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
 			return false;
 		}
 
@@ -69,7 +69,7 @@ class UserService extends BaseService
 
 		// 用户名/手机号不存在
 		if (empty($info) || !verify_pwd($password, $info['password'])) {
-			$this->setHttpMsg(self::PRECONDITION_FAILED, '用户名/密码错误');
+			self::setHttpMsg(self::PRECONDITION_FAILED, '用户名/密码错误');
 			return false;
 		}
 
@@ -77,31 +77,35 @@ class UserService extends BaseService
 		$oldAuthKey = $info['auth_key'];
 		$authKey = $userModel->generateAuthKey();
 		if ($info->save(['auth_key' => $authKey])) {
-			$this->setHttpMsg(self::OK);
+			self::setHttpMsg(self::OK);
 
 			//记录行为
-			$this->loginAction($info['id']);
+			self::loginAction($info['id']);
 
 			//头像
 			$info['avatar'] = $info['avatar'] ? : generate_avatar($info['nickname']);
 
 			//记录登录状态,检查登录用
-			$authCache = new AuthCache();
-			$authCache->setAuth($authKey, $info->toArray());
-			$authCache->rmAuth($oldAuthKey);
+			AuthCache::setAuth($authKey, $info->toArray());
+			AuthCache::rmAuth($oldAuthKey);
 
 			return $authKey;
 		} else {
-			$this->setHttpMsg(self::BAD_REQUEST, '登录失败');
+			self::setHttpMsg(self::BAD_REQUEST, '登录失败');
 			return false;
 		}
+	}
+
+	public static function logout($authKey)
+	{
+		return AuthCache::rmAuth($authKey);
 	}
 
 	/**
 	 * 记录登录行为
 	 * @param $userId
 	 */
-	public function loginAction($userId)
+	public static function loginAction($userId)
 	{
 		//用户行为
 		$data['last_login_time'] = time();
@@ -116,7 +120,7 @@ class UserService extends BaseService
 	 * @param $nickname
 	 * @return string
 	 */
-	public function generateNickname($nickname)
+	public static function generateNickname($nickname)
 	{
 		return $nickname ? : '在路上行走';
 	}
@@ -126,9 +130,9 @@ class UserService extends BaseService
 	 * @param $userId
 	 * @return array
 	 */
-	public function info($userId)
+	public static function info($userId)
 	{
-		return $this->infoBy($userId);
+		return self::infoBy($userId);
 	}
 
 	/**
@@ -136,9 +140,9 @@ class UserService extends BaseService
 	 * @param $authKey
 	 * @return array
 	 */
-	public function infoByAuthKey($authKey)
+	public static function infoByAuthKey($authKey)
 	{
-		return $this->infoBy(0, '', '', $authKey);
+		return self::infoBy(0, '', '', $authKey);
 	}
 
 	/**
@@ -149,7 +153,7 @@ class UserService extends BaseService
 	 * @param string $authKey
 	 * @return array
 	 */
-	protected function infoBy($userId = 0, $username='', $mobile='', $authKey='')
+	protected static function infoBy($userId = 0, $username='', $mobile='', $authKey='')
 	{
 		$where = [];
 		$userId && $where['id'] = $userId;
@@ -166,7 +170,7 @@ class UserService extends BaseService
 		return $info ? $info->toArray() : [];
 	}
 
-	public function setNickname($userId, $nickname)
+	public static function setNickname($userId, $nickname)
 	{
 		$info = UserModel::get($userId);
 		return $info->save(['nickname' => $nickname]) ? $info->toArray() : null;

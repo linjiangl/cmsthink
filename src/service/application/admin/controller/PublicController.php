@@ -14,40 +14,6 @@ use Md\MDAvatars;
 
 class PublicController extends BaseController
 {
-
-	/**
-	 * @api {post} /public/register 用户注册
-	 * @apiName UserRegister
-	 * @apiGroup User
-	 *
-	 * @apiParam {string{2..30}} username 用户名
-	 * @apiParam {string{6..30}} password 密码
-	 *
-	 * @apiSuccess (Success 2xx) {String} 201 用户ID
-	 *
-	 * @apiError {String} 422 验证错误
-	 * @apiError {String} 400 注册失败
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * "21"
-	 *
-	 * @apiErrorExample {json} Error-Response:
-	 * {"error":"用户名已存在"}
-	 */
-	public function register()
-	{
-		$username = $this->request->post('username', '', 'trim');
-		$password = $this->request->post('password', '', 'trim');
-
-		$serUser = new UserService();
-		$result = $serUser->register($username, $password);
-		if ($result === false) {
-			http_error($serUser->getCode(), $serUser->getError());
-		} else {
-			http_ok($result, 201);
-		}
-	}
-
 	/**
 	 * @api {post} /public/login 用户登录
 	 * @apiName UserLogin
@@ -73,15 +39,22 @@ class PublicController extends BaseController
 		$username = $this->request->post('username', '', 'trim');
 		$password = $this->request->post('password', '', 'trim');
 
-		$serUser = new UserService();
-		$authKey = $serUser->login($username, $password);
+		$authKey = UserService::login($username, $password);
 		if ($authKey === false) {
-			http_error($serUser->getCode(), $serUser->getError());
+			http_error(UserService::getCode(), UserService::getError());
 		} else {
 			http_ok($authKey);
 		}
 	}
 
+	/**
+	 * @api {get} /public/avatar 生成头像
+	 * @apiName UserAvatar
+	 * @apiGroup User
+	 *
+	 * @apiParam {string} char 字符
+	 * @apiParam {number} size 大小
+	 */
 	public function avatar()
 	{
 		$txt = $this->request->get('char', 'O', 'trim');
@@ -97,10 +70,5 @@ class PublicController extends BaseController
 		$avatar->Free();
 
 		return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
-	}
-
-	public function aa()
-	{
-		echo generate_avatar('s');
 	}
 }
