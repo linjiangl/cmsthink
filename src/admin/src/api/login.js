@@ -1,27 +1,18 @@
 import request from '@/utils/request'
+import qs from 'qs'
 
 export function login(username, password) {
-  return request({
-    url: '/user/login',
+  return request.base({
+    url: '/public/login',
     method: 'post',
-    data: {
-      username,
-      password
-    }
-  })
+    data: qs.stringify({ username, password })
+  });
 }
 
-export function getInfo(token) {
-  return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
-  })
+export function getInfo(userId) {
+  return request.post('/user/info', { user_id: userId })
 }
 
 export function logout() {
-  return request({
-    url: '/user/logout',
-    method: 'post'
-  })
+  return request.post('/user/logout');
 }
