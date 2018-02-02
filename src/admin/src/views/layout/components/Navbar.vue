@@ -1,5 +1,5 @@
 <template>
-  <div style="border-bottom: solid 1px #e6e6e6">
+  <div>
     <el-menu class="navbar" mode="horizontal" :default-active="activeIndex" @select="handleSelect">
       <el-menu-item index="1">处理中心</el-menu-item>
       <el-menu-item index="2">处理中心</el-menu-item>
@@ -16,13 +16,13 @@
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span @click="logout" style="display:block;">LogOut</span>
+            <span @click="logout" style="display:block;">退出</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
     </el-menu>
 
-    <breadcrumb style="line-height: 22px; margin-left: 18px;"></breadcrumb>
+    <breadcrumb style="line-height: 30px; margin: 0; padding-left: 18px; width: 100%; border-bottom: 1px solid #d8dce5;box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.12), 0 0 3px 0 rgba(0, 0, 0, 0.04);"></breadcrumb>
   </div>
 
 </template>

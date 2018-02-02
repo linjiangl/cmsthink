@@ -2,37 +2,34 @@
 
 namespace app\api\controller;
 
-use think\facade\Config;
+use Md\MDAvatars;
 
 class IndexController extends BaseController
 {
 	/**
-	 * @api {post} /public/login 用户登录
-	 * @apiName UserLogin
-	 * @apiGroup User
+	 * @api {get} /avatar 生成头像
+	 * @apiName PublicAvatar
+	 * @apiGroup Public
 	 *
-	 * @apiParam {string{2..30}} username 用户名
-	 * @apiParam {string{6..30}} password 密码
+	 * @apiParam {string} char 字符
+	 * @apiParam {number} size 大小
 	 *
-	 * @apiSuccess (Success 2xx) {String} 200 登录凭证
-	 *
-	 * @apiError {String} 422 验证错误
-	 * @apiError {String} 412 用户名/密码错误
-	 * @apiError {String} 400 登录失败
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * "411b87ffea8ec24db63ad09cc05369b5c465d0d4"
-	 *
-	 * @apiErrorExample {json} Error-Response:
-	 * {"error":"用户名\/密码错误"}
+	 * @apiSuccess (Success 2xx) {String} 200 图片内容,直接引用
 	 */
-    public function index()
-    {
-        echo url('index/index/hello', 'name=fff', false, Config::get('url_domain_pc'));
-    }
+	public function avatar()
+	{
+		$txt = $this->request->get('char', 'O', 'trim');
+		$size = $this->request->get('size', 96, 'intval');
+		$txt = mb_substr($txt, 0, 1);
+		$size = $size < 24 ? 24 : $size;
 
-    public function url()
-    {
-        return $this->returnMsg(404);
-    }
+		$avatar = new MDAvatars($txt, $size);
+
+		ob_start();
+		$avatar->Output2Browser();
+		$content = ob_get_clean();
+		$avatar->Free();
+
+		return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
+	}
 }

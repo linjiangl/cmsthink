@@ -83,7 +83,7 @@ class UserService extends BaseService
 			self::loginAction($info['id']);
 
 			//头像
-			$info['avatar'] = $info['avatar'] ? : generate_avatar($info['nickname']);
+			$info['avatar'] = $info['avatar'] ? : get_avatar_url($info['nickname']);
 
 			//记录登录状态,检查登录用
 			AuthCache::setAuth($authKey, $info->toArray());
@@ -164,7 +164,7 @@ class UserService extends BaseService
 		$userModel = new UserModel();
 		$info = $userModel->where($where)->find();
 		if ($info) {
-			$info['avatar'] = $info['avatar'] ? : generate_avatar($info['nickname']);
+			$info['avatar'] = $info['avatar'] ? : get_avatar_url($info['nickname']);
 		}
 
 		return $info ? $info->toArray() : [];

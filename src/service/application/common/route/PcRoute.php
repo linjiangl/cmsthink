@@ -1,12 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: linJiangL
- * Mail: 8257796@qq.com
- * Date: 2018/1/22
- * Time: 上午9:49
- */
-
 namespace app\common\route;
 
 use think\facade\Config;

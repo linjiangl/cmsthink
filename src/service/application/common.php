@@ -1,8 +1,31 @@
 <?php
+use think\facade\Config;
 
-function generate_avatar($char, $size = 96)
+function get_avatar_url($char, $size = 96)
 {
-	return url('admin/public/avatar', "char={$char}&size={$size}", false, config('url_domain_admin'));
+	return build_url('api/index/avatar', ['char' => $char, 'size' => $size], 'api');
+}
+
+function build_url($url, Array $param, $type = 'api')
+{
+	if (!is_array($param)) {
+		return '/';
+	}
+
+	switch ($type) {
+		case 'pc':
+			$domain = Config::get('url_domain_pc');
+			break;
+		case 'wap':
+			$domain = Config::get('url_domain_wap');
+			break;
+		case 'admin':
+			$domain = Config::get('url_domain_admin');
+			break;
+		default:
+			$domain = Config::get('url_domain_api');
+	}
+	return url($url, http_build_query($param), false, $domain);
 }
 
 /**

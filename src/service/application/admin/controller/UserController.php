@@ -88,6 +88,9 @@ class UserController extends AuthController
 				http_error(404, '用户不存在');
 			}
 		} else {
+			$this->user['role'] = ['admin'];
+			$this->user['roles'] = ['admin'];
+			$this->user['name'] = 'admin';
 			http_ok($this->user);
 		}
 	}

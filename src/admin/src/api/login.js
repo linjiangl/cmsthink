@@ -3,7 +3,7 @@ import qs from 'qs'
 
 export function login(username, password) {
   return request.base({
-    url: '/public/login',
+    url: '/login',
     method: 'post',
     data: qs.stringify({ username, password })
   });
@@ -14,5 +14,5 @@ export function getInfo(userId) {
 }
 
 export function logout() {
-  return request.post('/user/logout');
+  return request.post('/logout');
 }
