@@ -34,22 +34,41 @@ class UserInit extends Migrator
 
 		$data = [
 			[
+				'id'       => 1,
 				'username' => 'admin',
 				'nickname' => '管理员',
-				'password' => generate_pwd('admin123'),
-				'auth_key' => generate_auth_key(),
-				'type'     => 11
-			],
-			[
-				'username' => 'xiaomi',
-				'nickname' => '小米',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
 				'type'     => 11
 			],
 			[
-				'username' => 'xiaolan',
-				'nickname' => '小兰',
+				'id'       => 2,
+				'username' => 'su_editor',
+				'nickname' => '编辑管理员',
+				'password' => generate_pwd('123456'),
+				'auth_key' => generate_auth_key(),
+				'type'     => 11
+			],
+			[
+				'id'       => 3,
+				'username' => 'editor',
+				'nickname' => '编辑员',
+				'password' => generate_pwd('123456'),
+				'auth_key' => generate_auth_key(),
+				'type'     => 11
+			],
+			[
+				'id'       => 4,
+				'username' => 'su_adv',
+				'nickname' => '广告管理员',
+				'password' => generate_pwd('123456'),
+				'auth_key' => generate_auth_key(),
+				'type'     => 11
+			],
+			[
+				'id'       => 5,
+				'username' => 'tourist',
+				'nickname' => '游客',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
 				'type'     => 11
