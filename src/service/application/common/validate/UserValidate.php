@@ -28,7 +28,7 @@ class UserValidate extends Validate
 
 	public function sceneRegister()
 	{
-		return $this->only(['username', 'password', 'nickname'])
+		return $this->only(['username', 'password', 'nickname', 'avatar'])
 			->remove('nickname', 'require')
 			->append('username', 'unique:app\\common\\model\\UserModel,username');
 	}

@@ -8,20 +8,23 @@ use app\common\cache\AuthCache;
 
 class UserService extends BaseService
 {
+
 	/**
 	 * 账号注册
 	 *
 	 * @param $username
 	 * @param $password
 	 * @param string $nickname
+	 * @param string $avatar
 	 * @return bool|string
 	 */
-	public static function register($username, $password, $nickname = '')
+	public static function register($username, $password, $nickname = '', $avatar = '')
 	{
 		$data = [
 			'username' => $username,
 			'password' => $password,
-			'nickname' => self::generateNickname($nickname)
+			'nickname' => $nickname ? : self::generateNickname($nickname),
+			'avatar' => $avatar
 		];
 
 		$validate = new UserValidate();
@@ -96,14 +99,20 @@ class UserService extends BaseService
 		}
 	}
 
+	/**
+	 * 退出
+	 * @param $authKey
+	 * @return bool
+	 */
 	public static function logout($authKey)
 	{
 		return AuthCache::rmAuth($authKey);
 	}
 
 	/**
-	 * 记录登录行为
+	 * 登录行为记录
 	 * @param $userId
+	 * @return bool
 	 */
 	public static function loginAction($userId)
 	{
@@ -111,7 +120,8 @@ class UserService extends BaseService
 		$data['last_login_time'] = time();
 		$data['last_login_ip'] = ip2long(request()->ip());
 
-		UserModel::update($data, ['id' => $userId]);
+		$userModel = new UserModel();
+		return $userModel->modify($userId, $data);
 	}
 
 	/**
@@ -168,11 +178,5 @@ class UserService extends BaseService
 		}
 
 		return $info ? $info->toArray() : [];
-	}
-
-	public static function setNickname($userId, $nickname)
-	{
-		$info = UserModel::get($userId);
-		return $info->save(['nickname' => $nickname]) ? $info->toArray() : null;
 	}
 }

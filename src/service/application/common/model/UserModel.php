@@ -50,6 +50,10 @@ class UserModel extends BaseModel
 		}
 	}
 
+	/**
+	 * 获取auth_key
+	 * @return string
+	 */
 	public function getAuthKey()
 	{
 		return $this->auth_key;

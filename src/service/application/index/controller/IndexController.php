@@ -2,6 +2,7 @@
 
 namespace app\index\controller;
 
+use app\common\model\UserModel;
 use think\Controller;
 use think\facade\Url;
 
@@ -21,10 +22,11 @@ class IndexController extends Controller
 
 	public function tt()
 	{
-//		//Url::build('admin/public/avatar', 'char=sfs&size=98');
-//		echo url('admin/public/avatar', 'char=sfs&size=98', false, config('url_domain_admin'));
+		$model = new UserModel();
 
-		echo generate_avatar('放假我方');
+		$list = $model->listsByPk(4, ['status' => 10], 2);
+
+		print_r($list);
 	}
 
 }

@@ -15,6 +15,9 @@ namespace app\common\model;
  */
 class AuthGroupModel extends BaseModel
 {
+	const STATUS_OK = 1; //正常
+	const STATUS_FORBID = -1; //禁用
+
 	protected $pk = 'id';
 	protected $table = 'auth_group';
 	protected $autoWriteTimestamp = false;
