@@ -1,12 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: linJiangL
- * Mail: 8257796@qq.com
- * Date: 2018/1/26
- * Time: 下午2:46
- */
-
 namespace app\admin\controller;
 
 use app\common\service\UserService;
