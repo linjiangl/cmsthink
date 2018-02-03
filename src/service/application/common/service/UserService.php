@@ -142,7 +142,8 @@ class UserService extends BaseService
 	 */
 	public static function info($userId)
 	{
-		return self::infoBy($userId);
+		$userModel = new UserModel();
+		return $userModel->infoBy($userId);
 	}
 
 	/**
@@ -152,31 +153,7 @@ class UserService extends BaseService
 	 */
 	public static function infoByAuthKey($authKey)
 	{
-		return self::infoBy(0, '', '', $authKey);
-	}
-
-	/**
-	 * 获取用户信息
-	 * @param int $userId
-	 * @param string $username
-	 * @param string $mobile
-	 * @param string $authKey
-	 * @return array
-	 */
-	protected static function infoBy($userId = 0, $username='', $mobile='', $authKey='')
-	{
-		$where = [];
-		$userId && $where['id'] = $userId;
-		$username && $where['username'] = $username;
-		$mobile && $where['mobile'] = $mobile;
-		$authKey && $where['auth_key'] = $authKey;
-
 		$userModel = new UserModel();
-		$info = $userModel->where($where)->find();
-		if ($info) {
-			$info['avatar'] = $info['avatar'] ? : get_avatar_url($info['nickname']);
-		}
-
-		return $info ? $info->toArray() : [];
+		return $userModel->infoBy(0, '', '', $authKey);
 	}
 }

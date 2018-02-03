@@ -73,4 +73,28 @@ class UserModel extends BaseModel
 		return $authKey;
 	}
 
+	/**
+	 * 获取用户信息
+	 * @param int $userId
+	 * @param string $username
+	 * @param string $mobile
+	 * @param string $authKey
+	 * @return array
+	 */
+	public function infoBy($userId = 0, $username='', $mobile='', $authKey='')
+	{
+		$where = [];
+		$userId && $where['id'] = $userId;
+		$username && $where['username'] = $username;
+		$mobile && $where['mobile'] = $mobile;
+		$authKey && $where['auth_key'] = $authKey;
+
+		$info = $this->objToArray($this->where($where)->find());
+		if (isset($info['avatar']) && $info['avatar'] == '') {
+			$info['avatar'] = get_avatar_url($info['nickname']);
+		}
+
+		return $info;
+	}
+
 }

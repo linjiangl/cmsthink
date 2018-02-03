@@ -19,7 +19,7 @@ class UserInit extends Migrator
 			->addColumn('password', 'string', ['limit' => 60, 'default' => '', 'comment' => '密码'])
 			->addColumn('auth_key', 'string', ['limit' => 40, 'default' => '', 'comment' => '授权码'])
 			->addColumn('status', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 10, 'comment' => '状态{10:正常,11:禁用}'])
-			->addColumn('type', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 10, 'comment' => '类型{10:普通,11:管理}'])
+			->addColumn('role', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 10, 'comment' => '角色{10:普通,11:管理}'])
 			->addColumn('reg_ip', 'integer', ['signed' => false, 'limit' => 11, 'default' => 0, 'comment' => '注册IP'])
 			->addColumn('last_login_ip', 'integer', ['signed' => false, 'limit' => 11, 'default' => 0, 'comment' => '最后登录IP'])
 			->addColumn('last_login_time', 'integer', ['signed' => false, 'limit' => 11, 'default' => 0, 'comment' => '最后登录时间'])
@@ -27,9 +27,11 @@ class UserInit extends Migrator
 			->addColumn('update_time', 'integer', ['signed' => false, 'limit' => 11, 'default' => 0, 'comment' => '修改时间'])
 			->addIndex(['username'], ['unique' => true])
 			->addIndex(['auth_key'], ['unique' => true])
+			->addIndex(['create_time', 'status'], ['name' => 'create_time_status'])
 			->addIndex(['nickname'])
 			->addIndex(['mobile'])
-			->addIndex(['create_time', 'status'], ['name' => 'create_time_status'])
+			->addIndex(['status'])
+			->addIndex(['role'])
 			->create();
 
 		$data = [
@@ -39,7 +41,7 @@ class UserInit extends Migrator
 				'nickname' => '管理员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'type'     => 11
+				'role'     => 11
 			],
 			[
 				'id'       => 2,
@@ -47,7 +49,7 @@ class UserInit extends Migrator
 				'nickname' => '编辑管理员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'type'     => 11
+				'role'     => 11
 			],
 			[
 				'id'       => 3,
@@ -55,7 +57,7 @@ class UserInit extends Migrator
 				'nickname' => '编辑员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'type'     => 11
+				'role'     => 11
 			],
 			[
 				'id'       => 4,
@@ -63,7 +65,7 @@ class UserInit extends Migrator
 				'nickname' => '广告管理员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'type'     => 11
+				'role'     => 11
 			],
 			[
 				'id'       => 5,
@@ -71,7 +73,7 @@ class UserInit extends Migrator
 				'nickname' => '游客',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'type'     => 11
+				'role'     => 11
 			],
 		];
 		$this->insert($this->table, $data);

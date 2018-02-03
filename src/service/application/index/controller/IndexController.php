@@ -2,7 +2,10 @@
 
 namespace app\index\controller;
 
+use app\common\model\AuthGroupUserModel;
+use app\common\model\AuthMenuModel;
 use app\common\model\UserModel;
+use app\common\service\AuthService;
 use think\Controller;
 use think\facade\Url;
 
@@ -22,11 +25,7 @@ class IndexController extends Controller
 
 	public function tt()
 	{
-		$model = new UserModel();
-
-		$list = $model->listsByPk(4, ['status' => 10], 2);
-
-		print_r($list);
+		http_ok(AuthService::menuToGroups());
 	}
 
 }

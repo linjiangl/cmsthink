@@ -45,6 +45,22 @@ class BaseModel extends Model
 	}
 
 	/**
+	 * 对象转数组
+	 * toArray()对find()为空不支持
+	 *
+	 * @param $obj
+	 * @return array
+	 */
+	public function objToArray($obj)
+	{
+		if ($obj) {
+			return $obj->toArray();
+		} else {
+			return [];
+		}
+	}
+
+	/**
 	 * 获取数据列表
 	 *
 	 * @param array $condition

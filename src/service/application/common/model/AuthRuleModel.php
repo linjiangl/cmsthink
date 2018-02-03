@@ -21,6 +21,4 @@ class AuthRuleModel extends BaseModel
 	protected $createTime = false;
 	protected $updateTime = false;
 	protected $resultSetType = 'collection';
-
-
 }

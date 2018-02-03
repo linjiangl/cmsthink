@@ -15,7 +15,7 @@ namespace app\common\model;
  */
 class AuthGroupModel extends BaseModel
 {
-	const STATUS_OK = 1; //正常
+	const STATUS_NORMAL = 1; //正常
 	const STATUS_FORBID = -1; //禁用
 
 	protected $pk = 'id';
@@ -24,4 +24,25 @@ class AuthGroupModel extends BaseModel
 	protected $createTime = false;
 	protected $updateTime = false;
 	protected $resultSetType = 'collection';
+
+	/**
+	 * 获取权限组列表
+	 * @param int $status
+	 * @return array
+	 */
+	public function authGroups($status = self::STATUS_NORMAL)
+	{
+		switch ($status) {
+			case 1:
+				$where['status'] = self::STATUS_NORMAL;
+				break;
+			case -1:
+				$where['status'] = self::STATUS_FORBID;
+				break;
+			default:
+				$where = [];
+		}
+
+		return $this->where($where)->select()->toArray();
+	}
 }

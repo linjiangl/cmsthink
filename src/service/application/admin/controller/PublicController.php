@@ -2,6 +2,7 @@
 namespace app\admin\controller;
 
 use app\common\service\UserService;
+use app\common\service\AuthService;
 
 class PublicController extends BaseController
 {
@@ -36,5 +37,20 @@ class PublicController extends BaseController
 		} else {
 			http_ok($authKey);
 		}
+	}
+
+	/**
+	 * @api {get} /menuRoles 用户登录
+	 * @apiName PublicMenuRoles
+	 * @apiGroup Public
+	 *
+	 * @apiSuccess (Success 2xx) {String} 200 菜单对应的权限
+	 *
+	 * @apiSuccessExample {json} Success-Response:
+	 * {"sys":["Admin"],"post":["ManagingEditor","Editor"],"adv":["Adv"],"sys_seo":["Admin"],"sys_msg":["Admin"],"post_list":["ManagingEditor","Editor"],"post_wg":["ManagingEditor"],"auth":["Admin"],"auth_rule":["Admin"],"auth_menu":["Admin"],"post_rel":["Editor"]}
+	 */
+	public function menuRoles()
+	{
+		http_ok(AuthService::menuToGroups());
 	}
 }

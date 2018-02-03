@@ -11,6 +11,7 @@ class AdminRoute
 		Route::domain(Config::get('url_domain_admin'), function () {
 			//public
 			Route::rule('login', 'admin/public/login');
+			Route::rule('menuRoles', 'admin/public/menuRoles');
 
 			//user
 			Route::rule('user/register', 'admin/user/register');
