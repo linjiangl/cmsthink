@@ -25,7 +25,11 @@ class IndexController extends Controller
 
 	public function tt()
 	{
-		http_ok(AuthService::menuToGroups());
+		$model = new AuthMenuModel();
+
+		$list = $model->getMenus();
+
+		http_ok($model->getParentMenus($list, 11));
 	}
 
 }
