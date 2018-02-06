@@ -30,6 +30,6 @@ class IndexController extends BaseController
 		$content = ob_get_clean();
 		$avatar->Free();
 
-		return response($content, 200, ['Content-Length' => strlen($content)])->contentType('image/png');
+		return response($content, 200, ['Content-Length' => strlen($content), 'Cache-Control' => 'max-age=86400'])->contentType('image/png');
 	}
 }

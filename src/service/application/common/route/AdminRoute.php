@@ -15,8 +15,9 @@ class AdminRoute
 
 			//user
 			Route::rule('user/register', 'admin/user/register');
-			Route::rule('user/info', 'admin/user/info');
 			Route::rule('logout', 'admin/user/logout');
+			Route::rule('user/info', 'admin/user/info');
+			Route::rule('user/lists', 'admin/user/lists');
 
 			Route::bind('admin');
 		});

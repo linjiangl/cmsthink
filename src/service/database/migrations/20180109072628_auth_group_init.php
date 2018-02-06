@@ -25,23 +25,23 @@ class AuthGroupInit extends Migrator
 			[
 				'id'    => 1,
 				'title' => '管理员',
-				'name'  => 'Admin',
+				'name'  => 'admin',
 			],
 			[
 				'id'    => 2,
 				'title' => '编辑管理员',
-				'name'  => 'ManagingEditor',
+				'name'  => 'managingEditor',
 			],
 			[
 				'id'    => 3,
 				'title' => '编辑员',
 				'pid'   => 2,
-				'name'  => 'Editor',
+				'name'  => 'editor',
 			],
 			[
 				'id'    => 4,
 				'title' => '广告管理员',
-				'name'  => 'Adv',
+				'name'  => 'adv',
 			],
 		];
 		$this->insert($this->table, $data);

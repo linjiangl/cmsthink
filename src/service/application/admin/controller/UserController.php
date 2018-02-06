@@ -8,6 +8,8 @@
 
 namespace app\admin\controller;
 
+use app\common\model\UserModel;
+use app\common\service\AuthService;
 use app\common\service\UserService;
 
 class UserController extends AuthController
@@ -88,10 +90,16 @@ class UserController extends AuthController
 				http_error(404, '用户不存在');
 			}
 		} else {
-			$this->user['role'] = ['admin'];
-			$this->user['roles'] = ['admin'];
-			$this->user['name'] = 'admin';
+			$userGroup = AuthService::getUserGroup($this->user['id']);
+			$this->user['group'] = [$userGroup['group_name']];
 			http_ok($this->user);
 		}
+	}
+
+	public function lists()
+	{
+		$model = new UserModel();
+
+		http_ok($model->lists(), 401);
 	}
 }
