@@ -24,17 +24,6 @@
       </el-form-item>
 
       <el-button type="primary" style="width:100%;margin-bottom:30px;" :loading="loading" @click.native.prevent="handleLogin">{{translateKey('logIn')}}</el-button>
-
-      <div class="tips">
-        <span>{{translateKey('username')}} : admin</span>
-        <span>{{translateKey('password')}} : {{translateKey('any')}}</span>
-      </div>
-      <div class="tips">
-        <span>{{translateKey('username')}} : editor </span>
-        <span>{{translateKey('password')}} : {{translateKey('any')}}</span>
-      </div>
-
-      <el-button class="thirdparty-button" type="primary" @click="showDialog=true">{{translateKey('thirdparty')}}</el-button>
     </el-form>
 
     <el-dialog :title="translateKey('thirdparty')" :visible.sync="showDialog">

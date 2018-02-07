@@ -21,6 +21,12 @@ export default {
     postIndex: '内容列表',
     postCategory: '内容分类'
   },
+  common:{
+    status: '状态',
+    createTime: '创建时间',
+    updateTime: '更新时间',
+    search: '搜索'
+  },
   login: {
     title: '系统登录',
     logIn: '登录',
@@ -36,5 +42,12 @@ export default {
     github: '项目地址',
     screenfull: '全屏',
     theme: '换肤'
+  },
+  user: {
+    nickname: '昵称',
+    username: '用户名',
+    avatar: '用户头像',
+    mobile: '手机号码',
+    role: '角色'
   },
 }

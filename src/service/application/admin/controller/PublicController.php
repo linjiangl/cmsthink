@@ -2,7 +2,7 @@
 namespace app\admin\controller;
 
 use app\common\service\UserService;
-use app\common\service\AuthService;
+use app\common\service\SystemService;
 
 class PublicController extends BaseController
 {
@@ -51,6 +51,6 @@ class PublicController extends BaseController
 	 */
 	public function menuRoles()
 	{
-		http_ok(AuthService::menuToGroups());
+		http_ok(SystemService::menuToGroups());
 	}
 }

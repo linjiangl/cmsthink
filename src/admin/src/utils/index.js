@@ -1,6 +1,4 @@
-/**
- * Created by jiachenpan on 16/11/18.
- */
+import _ from 'lodash'
 
 export function parseTime(time, cFormat) {
   if (arguments.length === 0) {
@@ -264,4 +262,13 @@ export function deepClone(source) {
     }
   }
   return targetObj
+}
+
+export function selectOption(data)
+{
+  let options = [];
+  _.forEach(data, function (val, key) {
+    options.push({key: key, label: val})
+  })
+  return options;
 }

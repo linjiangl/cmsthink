@@ -16,7 +16,7 @@ namespace app\common\model;
 class AuthGroupModel extends BaseModel
 {
 	const STATUS_NORMAL = 1; //正常
-	const STATUS_FORBID = -1; //禁用
+	const STATUS_FORBID = 0; //禁用
 
 	protected $pk = 'id';
 	protected $table = 'auth_group';
@@ -36,7 +36,7 @@ class AuthGroupModel extends BaseModel
 			case 1:
 				$where['status'] = self::STATUS_NORMAL;
 				break;
-			case -1:
+			case 0:
 				$where['status'] = self::STATUS_FORBID;
 				break;
 			default:

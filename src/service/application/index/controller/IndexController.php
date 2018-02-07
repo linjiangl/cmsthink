@@ -5,7 +5,7 @@ namespace app\index\controller;
 use app\common\model\AuthGroupUserModel;
 use app\common\model\AuthMenuModel;
 use app\common\model\UserModel;
-use app\common\service\AuthService;
+use app\common\service\SystemService;
 use think\Controller;
 use think\facade\Url;
 

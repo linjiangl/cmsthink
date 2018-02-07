@@ -1,6 +1,6 @@
 <?php
 /**
- * AuthMenuModel.php
+ * MenuModel.php
  * ---
  * Created on 2018/2/2 下午3:46
  * Created by linjiangl
@@ -9,13 +9,13 @@
 namespace app\common\model;
 
 
-class AuthMenuModel extends BaseModel
+class MenuModel extends BaseModel
 {
 	const STATUS_NORMAL = 1; //正常
-	const STATUS_FORBID = -1; //禁用
+	const STATUS_FORBID = 0; //禁用
 
 	protected $pk = 'id';
-	protected $table = 'auth_menu';
+	protected $table = 'menu';
 	protected $autoWriteTimestamp = true;
 	protected $createTime = 'create_time';
 	protected $updateTime = 'update_time';
@@ -76,7 +76,7 @@ class AuthMenuModel extends BaseModel
 			case 1:
 				$where['status'] = self::STATUS_NORMAL;
 				break;
-			case -1:
+			case 0:
 				$where['status'] = self::STATUS_FORBID;
 				break;
 		}

@@ -13,7 +13,7 @@ namespace app\common\model;
  * @property string $mobile
  * @property string $email
  * @property integer $status
- * @property integer $type
+ * @property integer $role
  * @property integer $reg_ip
  * @property integer $last_login_ip
  * @property integer $last_login_time
@@ -22,6 +22,14 @@ namespace app\common\model;
  */
 class UserModel extends BaseModel
 {
+	const STATUS_FORBID = 0;
+	const STATUS_NORMAL = 1;
+	const STATUS_UNAUDITED = 2;
+	const STATUS_REFUSE = 3;
+
+	const ROLE_NORMAL = 1;
+	const ROLE_MANAGE = 2;
+
 	protected $pk = 'id';
 	protected $table = 'user';
 	protected $autoWriteTimestamp = true;
@@ -31,6 +39,24 @@ class UserModel extends BaseModel
 
 	protected $readonly = ['username'];
 	protected $hidden = ['auth_key', 'password'];
+
+	public function getAttrStatus()
+	{
+		return [
+			self::STATUS_FORBID => '已禁用',
+			self::STATUS_NORMAL => '已通过',
+			self::STATUS_UNAUDITED => '未审核',
+			self::STATUS_REFUSE => '已拒绝'
+		];
+	}
+
+	public function getAttrRole()
+	{
+		return [
+			self::ROLE_NORMAL => '普通',
+			self::ROLE_MANAGE => '管理'
+		];
+	}
 
 	/**
 	 * 新增数据

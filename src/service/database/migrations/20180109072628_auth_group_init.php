@@ -15,7 +15,7 @@ class AuthGroupInit extends Migrator
 			->addColumn('pid', 'integer', ['signed' => false, 'limit' => MysqlAdapter::INT_MEDIUM, 'default' => 0, 'comment' => '父级ID'])
 			->addColumn('title', 'string', ['limit' => 20, 'default' => '', 'comment' => '标题'])
 			->addColumn('name', 'string', ['limit' => 20, 'default' => '', 'comment' => '名称'])
-			->addColumn('status', 'boolean', ['limit' => 2, 'default' => 1, 'comment' => '状态{1:正常,-1:禁用}'])
+			->addColumn('status', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 1, 'comment' => '状态{0:禁用,1正常}'])
 			->addIndex('pid')
 			->addIndex('name')
 			->addIndex('status')
@@ -30,7 +30,7 @@ class AuthGroupInit extends Migrator
 			[
 				'id'    => 2,
 				'title' => '编辑管理员',
-				'name'  => 'managingEditor',
+				'name'  => 'su_editor',
 			],
 			[
 				'id'    => 3,

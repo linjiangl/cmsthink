@@ -1,6 +1,6 @@
 <?php
 /**
- * AuthService.php
+ * SystemService.php
  * ---
  * Created on 2018/2/2 下午4:03
  * Created by linjiangl
@@ -11,9 +11,9 @@ namespace app\common\service;
 
 use app\common\model\AuthGroupModel;
 use app\common\model\AuthGroupUserModel;
-use app\common\model\AuthMenuModel;
+use app\common\model\MenuModel;
 
-class AuthService extends BaseService
+class SystemService extends BaseService
 {
 	/**
 	 * 获取权限组
@@ -56,7 +56,7 @@ class AuthService extends BaseService
 	 */
 	public static function menuToGroups($is = false)
 	{
-		$model = new AuthMenuModel();
+		$model = new MenuModel();
 		$list = $model->menuGroups();
 		$data = [];
 		if ($is) {

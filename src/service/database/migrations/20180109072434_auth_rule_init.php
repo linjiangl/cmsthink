@@ -16,7 +16,7 @@ class AuthRuleInit extends Migrator
 			->addColumn('title', 'string', ['limit' => 50, 'default' => '', 'comment' => '规则名称'])
 			->addColumn('sign', 'string', ['limit' => 100, 'default' => '', 'comment' => '标记:对应的控制方法'])
 			->addColumn('sort', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 0, 'comment' => '排序'])
-			->addColumn('status', 'boolean', ['limit' => 2, 'default' => 1, 'comment' => '状态{1:正常,-1:禁用}'])
+			->addColumn('status', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 1, 'comment' => '状态{0:禁用,1正常}'])
 			->addIndex('pid')
 			->addIndex('status')
 			->create();

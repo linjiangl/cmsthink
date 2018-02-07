@@ -10,9 +10,8 @@ namespace app\admin\controller;
 
 
 use app\common\cache\AuthCache;
-use think\Controller;
 
-class AuthController extends Controller
+class AuthController extends BaseController
 {
 	/**
 	 * 当前登录用户信息
@@ -46,8 +45,4 @@ class AuthController extends Controller
 		}
 	}
 
-	public function _empty()
-	{
-		http_error(404, 'Not Found');
-	}
 }
