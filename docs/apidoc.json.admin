@@ -1,7 +1,16 @@
 {
-  "name": "后台接口",
+  "name": "后端接口",
   "version": "0.1.0",
-  "description": "后台接口",
-  "title": "后台接口",
-  "url" : "http://admin.tp.com"
+  "header": {
+    "title": "api domain",
+    "filename": "header-admin.md"
+  },
+  "footer": {
+    "title": "error code",
+    "filename": "footer.md"
+  },
+  "order": [
+    "System",
+    "Public"
+  ]
 }

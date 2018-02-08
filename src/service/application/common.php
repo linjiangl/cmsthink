@@ -1,11 +1,27 @@
 <?php
+
 use think\facade\Config;
 
+/**
+ * 生成头像地址
+ *
+ * @param $char
+ * @param int $size
+ * @return string
+ */
 function get_avatar_url($char, $size = 96)
 {
 	return build_url('api/index/avatar', ['char' => $char, 'size' => $size], 'api');
 }
 
+/**
+ * 构建url
+ *
+ * @param $url
+ * @param array $param
+ * @param string $type
+ * @return string
+ */
 function build_url($url, Array $param, $type = 'api')
 {
 	if (!is_array($param)) {
@@ -30,6 +46,7 @@ function build_url($url, Array $param, $type = 'api')
 
 /**
  * 接口错误返回
+ *
  * @param $code
  * @param string $msg
  */
@@ -40,6 +57,7 @@ function http_error($code, $msg = '')
 
 /**
  * 接口正确返回
+ *
  * @param $data
  * @param int $code
  */
@@ -83,14 +101,13 @@ function verify_pwd($pwd, $hash)
  * 对提供的数据进行urlsafe的base64编码。
  *
  * @param string $data 待编码的数据，一般为字符串
- *
  * @return string 编码后的字符串
  * @link http://developer.qiniu.com/docs/v6/api/overview/appendix.html#urlsafe-base64
  */
 function base64_urlSafeEncode($data)
 {
-	$find = array('+', '/');
-	$replace = array('-', '_');
+	$find = ['+', '/'];
+	$replace = ['-', '_'];
 	return str_replace($find, $replace, base64_encode($data));
 }
 
@@ -98,13 +115,55 @@ function base64_urlSafeEncode($data)
  * 对提供的urlsafe的base64编码的数据进行解码
  *
  * @param string $str 待解码的数据，一般为字符串
- *
  * @return string 解码后的字符串
  */
 function base64_urlSafeDecode($str)
 {
-	$find = array('-', '_');
-	$replace = array('+', '/');
+	$find = ['-', '_'];
+	$replace = ['+', '/'];
 	return base64_decode(str_replace($find, $replace, $str));
+}
+
+/**
+ * $config = [
+ *        'page' => [1, 'abs'],
+ *        'title' => [], //['', 'str']
+ *        'id' => [0, 'int']
+ * ]
+ *
+ * @param array $config
+ * @param string $method
+ * @return mixed
+ */
+function handle_params($config = [], $method = 'post')
+{
+	if ($method == 'post') {
+		$param = request()->post('', null, 'trim');
+	} else {
+		$param = request()->get('', null, 'trim');
+	}
+	$param = $param ? : [];
+	if ($config) {
+		foreach ($config as $k => $v) {
+			$param[$k] = isset($param[$k]) ? $param[$k] : '';
+			$v = $v ? : ['', 'str'];
+			switch ($v[1]) {
+				case 'int':
+					if ($param[$k] != '') {
+						$param[$k] = intval($param[$k]);
+					} else {
+						$param[$k] = intval($param[$k]) ? : $v[0];
+					}
+					break;
+				case 'abs':
+					$param[$k] = abs(intval($param[$k])) ? : $v[0];
+					break;
+				default:
+					$param[$k] = $param[$k] ? : $v[0];
+			}
+		}
+	}
+
+	return $param;
 }
 

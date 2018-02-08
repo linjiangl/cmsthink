@@ -25,11 +25,15 @@ class IndexController extends Controller
 
 	public function tt()
 	{
-		$model = new AuthMenuModel();
+		$param = handle_params([
+			'page' => [1, 'abs'],
+			'limit' => [20, 'abs'],
+			'nickname' => [],
+			'role' => [-1, 'int'],
+			'status' => [-1, 'int']
+		]);
 
-		$list = $model->getMenus();
-
-		http_ok($model->getParentMenus($list, 11));
+		print_r($param);
 	}
 
 }

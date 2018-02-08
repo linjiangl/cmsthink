@@ -67,12 +67,12 @@ export const asyncRouterMap = [
         meta: { title: 'permission' , icon: 'tab'},
         children: [
           { path: 'group', component: _import('system/permission/group/index'), name: 'permissionGroup', meta: { title: 'permissionGroup' }},
-          { path: 'group-user', component: _import('system/permission/groupUser/index'), name: 'permissionGroupUser', meta: { title: 'permissionGroupUser' }},
-          { path: 'group-rule', component: _import('system/permission/groupRule/index'), name: 'permissionGroupRule', meta: { title: 'permissionGroupRule' }},
+          { path: 'group-user', component: _import('system/permission/groupUser/index'), name: 'permissionGroupUser', meta: { title: 'permissionGroupUser' }, hidden: true},
+          { path: 'group-rule', component: _import('system/permission/groupRule/index'), name: 'permissionGroupRule', meta: { title: 'permissionGroupRule' }, hidden: true},
           { path: 'rule', component: _import('system/permission/rule/index'), name: 'permissionRule', meta: { title: 'permissionRule' }},
-          { path: 'menu', component: _import('system/permission/menu/index'), name: 'permissionMenu', meta: { title: 'permissionMenu' }},
         ]
       },
+      { path: 'menu', component: _import('system/menu/index'), name: 'menu', meta: { title: 'menu' }},
       { path: 'setting', component: _import('system/setting/index'), name: 'systemSetting', meta: { title: 'systemSetting' }},
       { path: 'label', component: _import('system/label/index'), name: 'label', meta: { title: 'label' }}
     ]
@@ -85,7 +85,7 @@ export const asyncRouterMap = [
     name: 'user',
     meta: { icon: 'peoples', title: 'user'},
     children: [
-      { path: 'index', component: _import('user/index/index'), name: 'userIndex', meta: { title: 'userIndex' }},
+      { path: 'index', component: _import('user/index/index'), name: 'userIndex', meta: { title: 'userIndex'}},
       { path: 'message', component: _import('user/message/index'), name: 'userMessage', meta: { title: 'userMessage' }},
     ]
   },

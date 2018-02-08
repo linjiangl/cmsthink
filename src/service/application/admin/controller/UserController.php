@@ -22,13 +22,12 @@ class UserController extends AuthController
 	 * @apiParam {string{2..30}} username 用户名
 	 * @apiParam {string{6..30}} password 密码
 	 *
-	 * @apiSuccess (Success 2xx) {String} 201 用户ID
-	 *
-	 * @apiError {String} 422 验证错误
-	 * @apiError {String} 400 注册失败
+	 * @apiSuccess (Success 201) {Number} id 用户id
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * "21"
+	 *
+	 * @apiError {String} error 错误信息
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {"error":"用户名已存在"}
@@ -53,12 +52,13 @@ class UserController extends AuthController
 	 *
 	 * @apiParam {string} auth_token 登录凭证
 	 *
-	 * @apiSuccess (Success 2xx) {String} 200 退出成功
+	 * @apiSuccessExample {json} Success-Response:
+	 * "ok"
 	 */
 	public function logout()
 	{
 		UserService::logout($this->authKey);
-		http_ok('');
+		http_ok('ok');
 	}
 
 	/**
@@ -66,15 +66,18 @@ class UserController extends AuthController
 	 * @apiName UserInfo
 	 * @apiGroup User
 	 *
-	 * @apiParam {string} auth_token 登录凭证
-	 * @apiParam {number} [user_id] 用户ID
+	 * @apiParam {String} auth_token 登录凭证
+	 * @apiParam {Number} [user_id] 用户ID
 	 *
-	 * @apiSuccess (Success 2xx) {String} 200 用户信息
-	 *
-	 * @apiError {String} 404 用户不存在
+	 * @apiSuccess {Number} id 用户ID
+	 * @apiSuccess {String} username 用户名
+	 * @apiSuccess {Number} status 状态{0:禁用,1:已通过,2:未审核,3:未通过}
+	 * @apiSuccess {Number} role 角色{1:管理,2:普通}
 	 *
 	 * @apiSuccessExample {json} Success-Response:
-	 * {"id":1,"username":"admin","nickname":"管理员","avatar":"http:\/\/admin.tp.exp\/public\/avatar?char=%E7%AE%A1%E7%90%86%E5%91%98&size=96","mobile":"","email":"","status":10,"type":11,"reg_ip":0,"last_login_ip":2130706433,"last_login_time":1517449833,"create_time":0,"update_time":1517450394}
+	 * {"id":1,"username":"admin","nickname":"管理员","avatar":"http:\/\/api.tp.exp\/avatar?char=%E7%AE%A1%E7%90%86%E5%91%98&size=96","mobile":"","email":"","status":1,"role":1,"reg_ip":0,"last_login_ip":2130706433,"last_login_time":1518058149,"create_time":0,"update_time":1518066382,"group":["admin"]}
+	 *
+	 * @apiError {String} error 错误信息
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {"error":"用户不存在"}
@@ -98,9 +101,21 @@ class UserController extends AuthController
 
 	public function lists()
 	{
-		$param = $this->handleParam();
+		$param = handle_params([
+			'page' => [1, 'abs'],
+			'limit' => [$this->limit, 'abs'],
+			'nickname' => [],
+			'role' => [-1, 'int'],
+			'status' => [-1, 'int']
+		]);
+
+		$where = [];
+		$param['nickname'] && $where['nickname'] = $param['nickname'];
+		$param['role'] >= 0 && $where['role'] = $param['role'];
+		$param['status'] >= 0 && $where['status'] = $param['status'];
+
 		$model = new UserModel();
-		$list = $model->lists([], $param['page'], $param['limit']);
+		$list = $model->lists($where, $param['page'], $param['limit']);
 		$list['param'] = $param;
 		http_ok($list);
 	}

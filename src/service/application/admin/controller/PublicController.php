@@ -14,14 +14,12 @@ class PublicController extends BaseController
 	 * @apiParam {string{2..30}} username 用户名
 	 * @apiParam {string{6..30}} password 密码
 	 *
-	 * @apiSuccess (Success 2xx) {String} 200 登录凭证
-	 *
-	 * @apiError {String} 422 验证错误
-	 * @apiError {String} 412 用户名/密码错误
-	 * @apiError {String} 400 登录失败
+	 * @apiSuccess {String} auth_token 登录凭证
 	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * "411b87ffea8ec24db63ad09cc05369b5c465d0d4"
+	 *
+	 * @apiError {String} error 错误信息
 	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {"error":"用户名\/密码错误"}
@@ -39,16 +37,6 @@ class PublicController extends BaseController
 		}
 	}
 
-	/**
-	 * @api {get} /menuRoles 用户登录
-	 * @apiName PublicMenuRoles
-	 * @apiGroup Public
-	 *
-	 * @apiSuccess (Success 2xx) {String} 200 菜单对应的权限
-	 *
-	 * @apiSuccessExample {json} Success-Response:
-	 * {"sys":["Admin"],"post":["ManagingEditor","Editor"],"adv":["Adv"],"sys_seo":["Admin"],"sys_msg":["Admin"],"post_list":["ManagingEditor","Editor"],"post_wg":["ManagingEditor"],"auth":["Admin"],"auth_rule":["Admin"],"auth_menu":["Admin"],"post_rel":["Editor"]}
-	 */
 	public function menuRoles()
 	{
 		http_ok(SystemService::menuToGroups());

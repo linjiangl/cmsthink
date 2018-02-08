@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 function pluralize(time, label) {
   if (time === 1) {
     return time + label
@@ -101,4 +103,10 @@ export function html2Text(val) {
 
 export function toThousandslsFilter(num) {
   return (+num || 0).toString().replace(/^-?\d+/g, m => m.replace(/(?=(?!\b)(\d{3})+$)/g, ','))
+}
+
+export function dateFormat(time, defaultFormat)
+{
+  let format = defaultFormat || 'YYYY-MM-DD HH:mm:ss'
+  return moment(time * 1000).format(format)
 }

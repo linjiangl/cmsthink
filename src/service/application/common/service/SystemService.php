@@ -12,6 +12,7 @@ namespace app\common\service;
 use app\common\model\AuthGroupModel;
 use app\common\model\AuthGroupUserModel;
 use app\common\model\MenuModel;
+use app\common\validate\MenuValidate;
 
 class SystemService extends BaseService
 {
@@ -20,7 +21,7 @@ class SystemService extends BaseService
 	 * @param int $status
 	 * @return array
 	 */
-	public static function getAuthGroups($status = 0)
+	public static function getAuthGroups($status = 1)
 	{
 		$model = new AuthGroupModel();
 		return $model->authGroups($status);
@@ -70,5 +71,31 @@ class SystemService extends BaseService
 		}
 
 		return $data;
+	}
+
+	/**
+	 * 添加菜单
+	 * @param $title
+	 * @param $router
+	 * @param int $pid
+	 * @param int $sort
+	 * @return bool|string
+	 */
+	public static function addMenu($title, $router, $pid = 0, $sort = 0)
+	{
+		$data = [
+			'title' => $title,
+			'router' => $router,
+			'pid' => $pid,
+			'sort' => $sort
+		];
+		$validate = new MenuValidate();
+		if (!$validate->check($data)) {
+			self::setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
+			return false;
+		}
+
+		$model = new MenuModel();
+		return $model->add($data);
 	}
 }

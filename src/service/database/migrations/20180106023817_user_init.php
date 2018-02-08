@@ -19,7 +19,7 @@ class UserInit extends Migrator
 			->addColumn('password', 'string', ['limit' => 60, 'default' => '', 'comment' => '密码'])
 			->addColumn('auth_key', 'string', ['limit' => 40, 'default' => '', 'comment' => '授权码'])
 			->addColumn('status', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 1, 'comment' => '状态{0:禁用,1:已通过,2:未审核,3:未通过}'])
-			->addColumn('role', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 1, 'comment' => '角色{1:普通,2:管理}'])
+			->addColumn('role', 'boolean', ['signed' => false, 'limit' => 2, 'default' => 1, 'comment' => '角色{1:管理,2:普通}'])
 			->addColumn('reg_ip', 'integer', ['signed' => false, 'limit' => 11, 'default' => 0, 'comment' => '注册IP'])
 			->addColumn('last_login_ip', 'integer', ['signed' => false, 'limit' => 11, 'default' => 0, 'comment' => '最后登录IP'])
 			->addColumn('last_login_time', 'integer', ['signed' => false, 'limit' => 11, 'default' => 0, 'comment' => '最后登录时间'])
@@ -41,7 +41,7 @@ class UserInit extends Migrator
 				'nickname' => '管理员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'role'     => 11
+				'role'     => 1
 			],
 			[
 				'id'       => 2,
@@ -49,7 +49,7 @@ class UserInit extends Migrator
 				'nickname' => '编辑管理员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'role'     => 11
+				'role'     => 1
 			],
 			[
 				'id'       => 3,
@@ -57,7 +57,7 @@ class UserInit extends Migrator
 				'nickname' => '编辑员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'role'     => 11
+				'role'     => 1
 			],
 			[
 				'id'       => 4,
@@ -65,7 +65,7 @@ class UserInit extends Migrator
 				'nickname' => '广告管理员',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'role'     => 11
+				'role'     => 1
 			],
 			[
 				'id'       => 5,
@@ -73,7 +73,7 @@ class UserInit extends Migrator
 				'nickname' => '游客',
 				'password' => generate_pwd('123456'),
 				'auth_key' => generate_auth_key(),
-				'role'     => 11
+				'role'     => 2
 			],
 		];
 		$this->insert($this->table, $data);

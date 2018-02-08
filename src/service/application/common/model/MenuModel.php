@@ -69,7 +69,7 @@ class MenuModel extends BaseModel
 	 * @param int $status
 	 * @return array
 	 */
-	public function getMenus($status = 0)
+	public function getMenus($status = -1)
 	{
 		$where = [];
 		switch ($status) {

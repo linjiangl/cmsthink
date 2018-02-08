@@ -1,7 +1,16 @@
 {
-  "name": "对外接口",
+  "name": "产品接口",
   "version": "0.1.0",
-  "description": "对外接口",
-  "title": "对外接口",
-  "url" : "http://api.tp.exp"
+  "description": "apiDoc example project",
+  "header": {
+    "title": "api domain",
+    "filename": "header-api.md"
+  },
+  "footer": {
+    "title": "error code",
+    "filename": "footer.md"
+  },
+  "order": [
+    "Public"
+  ]
 }

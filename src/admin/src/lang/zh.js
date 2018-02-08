@@ -7,11 +7,11 @@ export default {
     label: '系统标签',
 
     permission: '权限管理',
-    permissionGroup: '组列表',
+    permissionGroup: '权限分组',
     permissionGroupUser: '分组用户',
     permissionGroupRule: '分组规则',
-    permissionMenu: '菜单列表',
-    permissionRule: '规则列表',
+    permissionRule: '权限规则',
+    menu: '菜单管理',
 
     user: '用户',
     userIndex: '用户列表',

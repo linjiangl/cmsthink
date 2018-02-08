@@ -42,6 +42,7 @@ class AuthController extends BaseController
 			$this->user = $user;
 		} else {
 			http_error(401, '验证失败');
+			die();
 		}
 	}
 

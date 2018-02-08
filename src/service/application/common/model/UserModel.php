@@ -27,8 +27,8 @@ class UserModel extends BaseModel
 	const STATUS_UNAUDITED = 2;
 	const STATUS_REFUSE = 3;
 
-	const ROLE_NORMAL = 1;
-	const ROLE_MANAGE = 2;
+	const ROLE_MANAGE = 1;
+	const ROLE_NORMAL = 2;
 
 	protected $pk = 'id';
 	protected $table = 'user';

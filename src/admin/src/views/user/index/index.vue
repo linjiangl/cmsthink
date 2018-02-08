@@ -33,8 +33,8 @@
       <el-table-column label="状态" width="75">
         <span slot-scope="scope">{{handelStatus(scope.row.status)}}</span>
       </el-table-column>
-      <el-table-column label="创建时间" width="180">
-        <span slot-scope="scope">{{scope.row.create_time | dateFormat}}</span>
+      <el-table-column label="最后登录" width="180">
+        <span slot-scope="scope">{{scope.row.last_login_time | dateFormat}}</span>
       </el-table-column>
       <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
         <template slot-scope="scope">
@@ -46,7 +46,7 @@
     <div class="pagination-container">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page.sync="listQuery.page"
-                     :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
+                     :page-sizes="[1,2,3,5]" :page-size="listQuery.limit"
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
@@ -73,7 +73,7 @@
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 20,
+          limit: 2,
           status: undefined,
           nickname: undefined,
           role: undefined
@@ -108,7 +108,6 @@
       getList() {
         this.listLoading = true
         getUserList(this.listQuery).then(response => {
-          console.log(response.data)
           this.list = response.data.list
           this.total = response.data.total
           this.listLoading = false
