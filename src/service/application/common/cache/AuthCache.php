@@ -16,7 +16,7 @@ class AuthCache extends BaseCache
 	public static function setAuth($authKey, $user)
 	{
 		$index = "user:auth_key:" . $authKey;
-		Cache::set($index, $user, self::$expiry);
+		Cache::set($index, $user, self::expire());
 		return $authKey;
 	}
 

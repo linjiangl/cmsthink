@@ -15,16 +15,21 @@ class UserService extends BaseService
 	 * @param $username
 	 * @param $password
 	 * @param string $nickname
+	 * @param string $mobile
 	 * @param string $avatar
+	 * @param int $role
+	 *
 	 * @return bool|string
 	 */
-	public static function register($username, $password, $nickname = '', $avatar = '')
+	public static function register($username, $password, $mobile = '', $nickname = '', $avatar = '', $role = UserModel::ROLE_NORMAL)
 	{
 		$data = [
 			'username' => $username,
 			'password' => $password,
+			'mobile'   => $mobile,
 			'nickname' => $nickname ? : self::generateNickname($nickname),
-			'avatar' => $avatar
+			'avatar'   => $avatar,
+			'role'     => $role
 		];
 
 		$validate = new UserValidate();
@@ -49,6 +54,7 @@ class UserService extends BaseService
 	 *
 	 * @param $username
 	 * @param $password
+	 *
 	 * @return bool|string
 	 */
 	public static function login($username, $password)
@@ -101,7 +107,9 @@ class UserService extends BaseService
 
 	/**
 	 * 退出
+	 *
 	 * @param $authKey
+	 *
 	 * @return bool
 	 */
 	public static function logout($authKey)
@@ -111,7 +119,9 @@ class UserService extends BaseService
 
 	/**
 	 * 登录行为记录
+	 *
 	 * @param $userId
+	 *
 	 * @return bool
 	 */
 	public static function loginAction($userId)
@@ -128,6 +138,7 @@ class UserService extends BaseService
 	 * 生成昵称
 	 *
 	 * @param $nickname
+	 *
 	 * @return string
 	 */
 	public static function generateNickname($nickname)
@@ -137,7 +148,9 @@ class UserService extends BaseService
 
 	/**
 	 * 获取用户信息
+	 *
 	 * @param $userId
+	 *
 	 * @return array
 	 */
 	public static function info($userId)
@@ -148,7 +161,9 @@ class UserService extends BaseService
 
 	/**
 	 * 获取用户信息
+	 *
 	 * @param $authKey
+	 *
 	 * @return array
 	 */
 	public static function infoByAuthKey($authKey)

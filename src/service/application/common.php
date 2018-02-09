@@ -61,7 +61,7 @@ function http_error($code, $msg = '')
  * @param $data
  * @param int $code
  */
-function http_ok($data, $code = 200)
+function http_ok($data = 'ok', $code = 200)
 {
 	json($data)->code($code)->send();
 }

@@ -9,8 +9,10 @@
 namespace app\admin\controller;
 
 use app\common\model\UserModel;
+use app\common\service\BaseService;
 use app\common\service\SystemService;
 use app\common\service\UserService;
+use app\common\validate\UserValidate;
 
 class UserController extends AuthController
 {
@@ -18,26 +20,30 @@ class UserController extends AuthController
 	 * @api {post} /user/register 用户注册
 	 * @apiName UserRegister
 	 * @apiGroup User
-	 *
+	 * @apiParam {string} auth_token 登录凭证
 	 * @apiParam {string{2..30}} username 用户名
 	 * @apiParam {string{6..30}} password 密码
-	 *
+	 * @apiParam {string{..20}} [nickname] 昵称
+	 * @apiParam {string{11}} [mobile] 手机号
+	 * @apiParam {string{..255}} [avatar] 头像
 	 * @apiSuccess (Success 201) {Number} id 用户id
-	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * "21"
-	 *
 	 * @apiError {String} error 错误信息
-	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {"error":"用户名已存在"}
 	 */
 	public function register()
 	{
-		$username = $this->request->post('username', '', 'trim');
-		$password = $this->request->post('password', '', 'trim');
+		$param = handle_params([
+			'username' => [],
+			'password' => [],
+			'nickname' => [],
+			'avatar'   => [],
+			'mobile'   => [],
+		]);
 
-		$result = UserService::register($username, $password);
+		$result = UserService::register($param['username'], $param['password'], $param['mobile'], $param['nickname'], $param['avatar'], UserModel::ROLE_MANAGE);
 		if ($result === false) {
 			http_error(UserService::getCode(), UserService::getError());
 		} else {
@@ -49,9 +55,7 @@ class UserController extends AuthController
 	 * @api {post} /user/logout 用户退出
 	 * @apiName UserLogout
 	 * @apiGroup User
-	 *
 	 * @apiParam {string} auth_token 登录凭证
-	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * "ok"
 	 */
@@ -65,20 +69,15 @@ class UserController extends AuthController
 	 * @api {post} /user/info 用户信息
 	 * @apiName UserInfo
 	 * @apiGroup User
-	 *
 	 * @apiParam {String} auth_token 登录凭证
 	 * @apiParam {Number} [user_id] 用户ID
-	 *
 	 * @apiSuccess {Number} id 用户ID
 	 * @apiSuccess {String} username 用户名
 	 * @apiSuccess {Number} status 状态{0:禁用,1:已通过,2:未审核,3:未通过}
 	 * @apiSuccess {Number} role 角色{1:管理,2:普通}
-	 *
 	 * @apiSuccessExample {json} Success-Response:
 	 * {"id":1,"username":"admin","nickname":"管理员","avatar":"http:\/\/api.tp.exp\/avatar?char=%E7%AE%A1%E7%90%86%E5%91%98&size=96","mobile":"","email":"","status":1,"role":1,"reg_ip":0,"last_login_ip":2130706433,"last_login_time":1518058149,"create_time":0,"update_time":1518066382,"group":["admin"]}
-	 *
 	 * @apiError {String} error 错误信息
-	 *
 	 * @apiErrorExample {json} Error-Response:
 	 * {"error":"用户不存在"}
 	 */
@@ -99,14 +98,40 @@ class UserController extends AuthController
 		}
 	}
 
+	public function update()
+	{
+		$param = handle_params([
+			'id' => [0, 'int'],
+			'nickname' => [],
+			'password' => [],
+			'role'     => [2, 'int'],
+		]);
+
+		$validate = new UserValidate();
+		if (!$validate->scene('update')->check($param)) {
+			http_error(BaseService::UNPROCESSABLE_ENTITY, $validate->getError());
+		}
+
+		$model = new UserModel();
+		$data = [];
+		$param['nickname'] && $data['nickname'] = $param['nickname'];
+		$param['password'] && $data['password'] = generate_pwd($param['password']);
+		$param['role'] && $data['role'] = $param['role'];
+		if ($data && $model->modify($param['id'], $data)) {
+			http_ok(UserService::info($param['id']));
+		} else {
+			http_error(BaseService::UNPROCESSABLE_ENTITY, '保存失败');
+		}
+	}
+
 	public function lists()
 	{
 		$param = handle_params([
-			'page' => [1, 'abs'],
-			'limit' => [$this->limit, 'abs'],
+			'page'     => [1, 'abs'],
+			'limit'    => [$this->limit, 'abs'],
 			'nickname' => [],
-			'role' => [-1, 'int'],
-			'status' => [-1, 'int']
+			'role'     => [-1, 'int'],
+			'status'   => [-1, 'int']
 		]);
 
 		$where = [];

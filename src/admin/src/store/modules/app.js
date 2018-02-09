@@ -5,7 +5,8 @@ const app = {
     sidebar: {
       opened: !+Cookies.get('sidebarStatus')
     },
-    language: Cookies.get('language') || 'en'
+    language: Cookies.get('language') || 'en',
+    isDialog: false
   },
   mutations: {
     TOGGLE_SIDEBAR: state => {
@@ -19,6 +20,9 @@ const app = {
     SET_LANGUAGE: (state, language) => {
       state.language = language
       Cookies.set('language', language)
+    },
+    SET_IS_DIALOG: (state, is) => {
+      state.isDialog = is
     }
   },
   actions: {
@@ -27,6 +31,9 @@ const app = {
     },
     setLanguage({ commit }, language) {
       commit('SET_LANGUAGE', language)
+    },
+    setIsDialog({ commit }, is) {
+      commit('SET_IS_DIALOG', is)
     }
   }
 }

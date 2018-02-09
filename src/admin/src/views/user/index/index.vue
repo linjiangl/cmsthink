@@ -17,6 +17,7 @@
       <el-button class="filter-item" type="primary" v-waves icon="el-icon-search" @click="handleFilter">
         {{$t('common.search')}}
       </el-button>
+      <el-button class="filter-item" style="margin-left: 10px;" @click="handleCreate" type="primary" icon="el-icon-edit">创建</el-button>
     </div>
 
     <el-table
@@ -27,18 +28,19 @@
         type="selection"
         width="36">
       </el-table-column>
-      <el-table-column prop="username" label="用户名" width="150"></el-table-column>
-      <el-table-column prop="nickname" label="昵称" width="200"></el-table-column>
-      <el-table-column prop="mobile" label="手机号" width="110"></el-table-column>
-      <el-table-column label="状态" width="75">
+      <el-table-column prop="id" label="ID" width="80"></el-table-column>
+      <el-table-column prop="username" label="Username" width="150"></el-table-column>
+      <el-table-column prop="nickname" label="Nickname" width="200"></el-table-column>
+      <el-table-column prop="mobile" label="Mobile" width="110"></el-table-column>
+      <el-table-column label="Status" width="75">
         <span slot-scope="scope">{{handelStatus(scope.row.status)}}</span>
       </el-table-column>
-      <el-table-column label="最后登录" width="180">
+      <el-table-column label="LoginTime" width="180">
         <span slot-scope="scope">{{scope.row.last_login_time | dateFormat}}</span>
       </el-table-column>
-      <el-table-column align="center" label="操作" class-name="small-padding fixed-width">
+      <el-table-column align="center" label="Actions" class-name="small-padding fixed-width">
         <template slot-scope="scope">
-          <el-button type="primary" size="mini">编辑</el-button>
+          <el-button type="primary" size="mini" @click="handleEdit(scope.row.id)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,23 +48,34 @@
     <div class="pagination-container">
       <el-pagination background @size-change="handleSizeChange" @current-change="handleCurrentChange"
                      :current-page.sync="listQuery.page"
-                     :page-sizes="[1,2,3,5]" :page-size="listQuery.limit"
+                     :page-sizes="[10,20,30,50]" :page-size="listQuery.limit"
                      layout="total, sizes, prev, pager, next, jumper" :total="total">
       </el-pagination>
     </div>
+
+    <setting :digTitle="digTitle" :id.sync="editId" v-if="isDialog" @addUser="handleFilter" @updateUser="getList"></setting>
   </div>
 </template>
 
 <script>
-  import { getUserList, condition } from '@/api/user'
+  import { getUserlist, condition } from '@/api/user'
   import waves from '@/directive/waves' // 水波纹指令
-  import _ from 'lodash'
   import { selectOption } from '@/utils'
+  import setting from './setting'
+  import { mapGetters } from 'vuex'
 
   export default {
     name: 'userList',
+    components: {
+      setting
+    },
     directives: {
       waves
+    },
+    computed: {
+      ...mapGetters([
+        'isDialog'
+      ])
     },
     data() {
       return {
@@ -73,13 +86,15 @@
         listLoading: true,
         listQuery: {
           page: 1,
-          limit: 2,
+          limit: 20,
           status: undefined,
           nickname: undefined,
           role: undefined
         },
         statusOption: [],
-        roleOption: []
+        roleOption: [],
+        editId: 0,
+        digTitle: 'create'
       }
     },
     filters: {
@@ -107,7 +122,7 @@
       },
       getList() {
         this.listLoading = true
-        getUserList(this.listQuery).then(response => {
+        getUserlist(this.listQuery).then(response => {
           this.list = response.data.list
           this.total = response.data.total
           this.listLoading = false
@@ -129,8 +144,17 @@
         return this.roles[type]
       },
       handelStatus(type) {
-        console.log(type)
         return this.status[type]
+      },
+      handleCreate() {
+        this.editId = 0
+        this.digTitle = 'create'
+        this.$store.dispatch('setIsDialog', true)
+      },
+      handleEdit(id) {
+        this.editId = id
+        this.digTitle = 'update'
+        this.$store.dispatch('setIsDialog', true)
       }
     }
   }

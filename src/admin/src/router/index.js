@@ -61,13 +61,13 @@ export const asyncRouterMap = [
     children: [
       {
         path: '/system/permission',
-        redirect: '/system/permission/group-rule',
         component: _import('system/permission/index'),
+        redirect: '/system/permission/group-rule',
         name: 'permission',
         meta: { title: 'permission' , icon: 'tab'},
         children: [
           { path: 'group', component: _import('system/permission/group/index'), name: 'permissionGroup', meta: { title: 'permissionGroup' }},
-          { path: 'group-user', component: _import('system/permission/groupUser/index'), name: 'permissionGroupUser', meta: { title: 'permissionGroupUser' }, hidden: true},
+          { path: 'group-user/:groupId', component: _import('system/permission/groupUser/index'), name: 'permissionGroupUser', meta: { title: 'permissionGroupUser' }, hidden: true},
           { path: 'group-rule', component: _import('system/permission/groupRule/index'), name: 'permissionGroupRule', meta: { title: 'permissionGroupRule' }, hidden: true},
           { path: 'rule', component: _import('system/permission/rule/index'), name: 'permissionRule', meta: { title: 'permissionRule' }},
         ]

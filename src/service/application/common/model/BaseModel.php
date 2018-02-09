@@ -67,15 +67,19 @@ class BaseModel extends Model
 	 * @param int $page
 	 * @param int $limit
 	 * @param string $field
+	 * @param array $order
 	 * @return array
 	 */
-	public function lists($condition = [], $page = 1, $limit = 20, $field = '*')
+	public function lists($condition = [], $page = 1, $limit = 20, $field = '*', $order = [])
 	{
 		$total = $this->where($condition)->count();
 		$list = [];
 		if ($total) {
 			$offset = ($page - 1) * $limit;
-			$list = $this->field($field)->where($condition)->limit($offset, $limit)->select()->toArray();
+			if (!$order) {
+				$order = [$this->getPk() => 'desc'];
+			}
+			$list = $this->field($field)->where($condition)->order($order)->limit($offset, $limit)->select()->toArray();
 		}
 
 		return ['total' => $total, 'list' => $list, 'page' => $page];

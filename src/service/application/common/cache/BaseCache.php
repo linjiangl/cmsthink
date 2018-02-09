@@ -14,18 +14,9 @@ use think\facade\Config;
 
 class BaseCache
 {
-    /**
-     * 缓存周期
-     */
-    protected static $expiry = 3600;
-
-	protected $beforeActionList = [
-		'init',
-	];
-
-	public static function init()
+	public static function expire()
 	{
-		self::$expiry = Config::get("cache.expire");
+		return Config::get("cache.expire");
 	}
 
 	/**
@@ -35,12 +26,12 @@ class BaseCache
      * @param mixed $data set时保存的数据
      * @return bool|mixed
      */
-    protected function cache($index, $type, $data)
+	public static function cache($index, $type, $data)
     {
         switch ($type) {
             case 'set':
                 $result = $data;
-                Cache::set($index, $data, self::$expiry);
+                Cache::set($index, $data, self::expire());
                 break;
             case 'del':
                 $result = Cache::rm($index);
