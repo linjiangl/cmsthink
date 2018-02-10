@@ -28,10 +28,18 @@
         type="selection"
         width="36">
       </el-table-column>
-      <el-table-column prop="id" label="ID" width="80"></el-table-column>
-      <el-table-column prop="username" label="Username" width="150"></el-table-column>
-      <el-table-column prop="nickname" label="Nickname" width="200"></el-table-column>
-      <el-table-column prop="mobile" label="Mobile" width="110"></el-table-column>
+      <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
+      <el-table-column prop="username" label="Username" width="150" align="center"></el-table-column>
+      <el-table-column prop="nickname" label="Nickname" width="200" align="center"></el-table-column>
+      <el-table-column label="Mobile" width="200" align="center">
+        <template slot-scope="scope">
+          <template v-if="scope.row.edit">
+            <el-input class="edit-input" size="small" v-model="scope.row.mobile"></el-input>
+            <el-button class='cancel-btn' size="small" type="primary" @click="confirmEdit(scope.row)">确认</el-button>
+          </template>
+          <span v-else @click='scope.row.edit=!scope.row.edit' >{{ scope.row.mobile }}</span>
+        </template>
+      </el-table-column>
       <el-table-column label="Status" width="75">
         <span slot-scope="scope">{{handelStatus(scope.row.status)}}</span>
       </el-table-column>
@@ -61,7 +69,7 @@
 </template>
 
 <script>
-  import { getUserlist, condition } from '@/api/user'
+  import { getUserlist, condition, updateUser } from '@/api/user'
   import waves from '@/directive/waves' // 水波纹指令
   import { selectOption } from '@/utils'
   import setting from './setting'
@@ -125,9 +133,14 @@
       },
       getList() {
         this.listLoading = true
-        getUserlist(this.listQuery).then(response => {
-          this.list = response.data.list
-          this.total = response.data.total
+        getUserlist(this.listQuery).then(res => {
+          this.total = res.data.total
+          let items = res.data.list
+          this.list = items.map(v => {
+            this.$set(v, 'edit', false)
+            v.originalMobile = v.mobile
+            return v
+          })
           this.listLoading = false
         })
       },
@@ -158,6 +171,26 @@
         this.editId = id
         this.digTitle = 'update'
         this.$store.dispatch('setIsDialog', true)
+      },
+      confirmEdit(row) {
+        row.edit = false
+        if (row.mobile === row.originalMobile) {
+          return false
+        }
+
+        let data = {
+          id: row.id,
+          mobile: row.mobile
+        }
+        updateUser(data).then(res => {
+          row.originalMobile = row.mobile
+          this.$message({
+            message: 'The title has been edited',
+            type: 'success'
+          })
+        }).catch(err => {
+          row.mobile = row.originalMobile
+        })
       }
     }
   }
