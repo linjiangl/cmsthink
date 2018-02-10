@@ -101,26 +101,23 @@ class UserController extends AuthController
 	public function update()
 	{
 		$param = handle_params([
-			'id' => [0, 'int'],
+			'id'       => [0, 'int'],
 			'nickname' => [],
-			'password' => [],
 			'role'     => [2, 'int'],
+			'status'   => [0, 'int'],
+			'avatar'   => [],
+			'mobile'   => []
 		]);
-
-		$validate = new UserValidate();
-		if (!$validate->scene('update')->check($param)) {
-			http_error(BaseService::UNPROCESSABLE_ENTITY, $validate->getError());
-		}
-
-		$model = new UserModel();
-		$data = [];
-		$param['nickname'] && $data['nickname'] = $param['nickname'];
-		$param['password'] && $data['password'] = generate_pwd($param['password']);
-		$param['role'] && $data['role'] = $param['role'];
-		if ($data && $model->modify($param['id'], $data)) {
-			http_ok(UserService::info($param['id']));
+		$expand = [
+			'status' => $param['status'],
+			'role'   => $param['role'],
+			'mobile' => $param['mobile']
+		];
+		$result = UserService::update($param['id'], $param['nickname'], '', $param['avatar'], $expand);
+		if ($result === false) {
+			http_error(UserService::getCode(), UserService::getError());
 		} else {
-			http_error(BaseService::UNPROCESSABLE_ENTITY, '保存失败');
+			http_ok();
 		}
 	}
 

@@ -35,8 +35,11 @@
       <el-table-column label="Status" width="75">
         <span slot-scope="scope">{{handelStatus(scope.row.status)}}</span>
       </el-table-column>
-      <el-table-column label="LoginTime" width="180">
-        <span slot-scope="scope">{{scope.row.last_login_time | dateFormat}}</span>
+      <el-table-column label="Role" width="75">
+        <span slot-scope="scope">{{handelRoles(scope.row.role)}}</span>
+      </el-table-column>
+      <el-table-column label="CreateTime" width="180">
+        <span slot-scope="scope">{{scope.row.create_time | dateFormat}}</span>
       </el-table-column>
       <el-table-column align="center" label="Actions" class-name="small-padding fixed-width">
         <template slot-scope="scope">

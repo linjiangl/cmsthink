@@ -22,7 +22,8 @@ class UserValidate extends Validate
 		'mobile|手机'    => 'mobile',
 		'email|邮箱'     => 'email',
 		'password|密码'  => 'require|min:6|max:30',
-		'role'         => 'number|between:1,2'
+		'role'         => 'number|between:1,2',
+		'status'       => 'number|between:0,4'
 	];
 
 	protected $scene = [
@@ -45,10 +46,12 @@ class UserValidate extends Validate
 
 	public function sceneUpdate()
 	{
-		return $this->only(['id', 'nickname', 'password', 'role'])
+		return $this->only(['id', 'nickname', 'password', 'role', 'status', 'avatar', 'mobile'])
 			->append('id', 'require')
 			->remove('password', 'require')
-			->append('id', 'checkUserId');
+			->append('id', 'checkUserId')
+			->remove('nickname', 'require')
+			->append('mobile', 'checkMobile');
 	}
 
 	protected function checkUserId($val)
@@ -57,6 +60,20 @@ class UserValidate extends Validate
 		if ($val > 0) {
 			$model = new UserModel();
 			return $model->where(['id' => $val])->find() ? true : '用户不存在';
+		}
+		return true;
+	}
+
+	protected function checkMobile($val, $rule, $data)
+	{
+		if ($val) {
+			$model = new UserModel();
+			$info = $model->where('mobile', $val)->find();
+			if ($info && $info['id'] != $data['id']) {
+				return '该手机号已存在';
+			} else {
+				return true;
+			}
 		}
 		return true;
 	}

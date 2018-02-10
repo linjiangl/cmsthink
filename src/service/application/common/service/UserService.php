@@ -171,4 +171,61 @@ class UserService extends BaseService
 		$userModel = new UserModel();
 		return $userModel->infoBy(0, '', '', $authKey);
 	}
+
+	/**
+	 * 修改用户信息
+	 * @param $userId
+	 * @param string $nickname
+	 * @param string $password
+	 * @param string $avatar
+	 * @param array $extend
+	 *
+	 * @return bool
+	 */
+	public static function update($userId, $nickname = '', $password = '', $avatar = '', $extend = [])
+	{
+		$data['id'] = $userId;
+		$nickname && $data['nickname'] = $nickname;
+		$password && $data['password'] = $password;
+		$avatar && $data['avatar'] = $avatar;
+		$extend && $data = array_merge($data, $extend);
+		$validate = new UserValidate();
+		if (!$validate->scene('update')->check($data)) {
+			self::setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
+			return false;
+		}
+
+		$model = new UserModel();
+		$password && $data['password'] = generate_pwd($password);
+		if ($model->modify($data['id'], $data)) {
+			return true;
+		} else {
+			self::setHttpMsg(self::BAD_REQUEST, '保存失败');
+			return false;
+		}
+	}
+
+	/**
+	 * 修改密码
+	 * @param $userId
+	 * @param $password
+	 *
+	 * @return bool
+	 */
+	public static function updateByPassword($userId, $password)
+	{
+		return self::update($userId, '', $password);
+	}
+
+	/**
+	 * 修改手机号码
+	 * @param $userId
+	 * @param $mobile
+	 *
+	 * @return bool
+	 */
+	public static function updateByMobile($userId, $mobile)
+	{
+		return self::update($userId, '', '', '', ['mobile' => $mobile]);
+	}
 }
