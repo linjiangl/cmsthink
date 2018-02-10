@@ -67,7 +67,7 @@ class SystemController extends AuthController
 	public function getMenus()
 	{
 		$model = new MenuModel();
-		$list = $model->getSubMenus($model->getMenus());
+		$list = handle_tree($model->getMenus());
 		http_ok($list);
 	}
 

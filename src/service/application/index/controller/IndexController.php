@@ -5,6 +5,7 @@ namespace app\index\controller;
 use app\common\cache\AuthCache;
 use app\common\model\AuthGroupUserModel;
 use app\common\model\AuthMenuModel;
+use app\common\model\MenuModel;
 use app\common\model\UserModel;
 use app\common\service\SystemService;
 use think\Controller;
@@ -27,24 +28,14 @@ class IndexController extends Controller
 
 	public function tt()
 	{
-//		$param = handle_params([
-//			'page' => [1, 'abs'],
-//			'limit' => [20, 'abs'],
-//			'nickname' => [],
-//			'role' => [-1, 'int'],
-//			'status' => [-1, 'int']
-//		]);
-//
-//		print_r($param);
+		$model = new MenuModel();
 
-		$model = new UserModel();
 
-		$rs = $model->modify(6, ['nickname' => 123123]);
+		$list = $model->getMenus();
 
-		//var_dump($model->save(['nickname' => 123123], ['id' => 5]));
-
-		var_dump($rs);
+		print_r(handle_tree($list, 0));
 	}
+
 
 }
 

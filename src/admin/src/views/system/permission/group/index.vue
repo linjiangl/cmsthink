@@ -35,7 +35,7 @@
           <!--<el-button v-if="scope.row.edit" type="success" @click="confirmEdit(scope.row)" size="small" icon="el-icon-circle-check-outline">Ok</el-button>-->
           <!--<el-button v-else type="primary" @click='scope.row.edit=!scope.row.edit' size="small" icon="el-icon-edit">Edit</el-button>-->
           <el-button-group>
-            <el-button type="primary" size="small"><router-link :to="{name: 'permissionGroupUser', params: {groupId: scope.row.id}}">用户</router-link></el-button>
+            <router-link :to="{name: 'permissionGroupUser', params: {groupId: scope.row.id}}" target="_blank"><el-button type="primary" size="small">用户</el-button></router-link>
           </el-button-group>
         </template>
       </el-table-column>

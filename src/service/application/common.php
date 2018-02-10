@@ -167,3 +167,25 @@ function handle_params($config = [], $method = 'post')
 	return $param;
 }
 
+/**
+ * 变成数结构数据
+ * @param $data
+ * @param int $pid
+ *
+ * @return array
+ */
+function handle_tree($data, $pid = 0)
+{
+	$tree = [];
+	foreach ($data as $k => $v) {
+		if ($v['pid'] == $pid) {
+			$v['children'] = handle_tree($data, $v['id']);
+			if($v['children'] == null){
+				unset($v['children']);
+			}
+			$tree[] = $v;
+		}
+	}
+	return $tree;
+}
+

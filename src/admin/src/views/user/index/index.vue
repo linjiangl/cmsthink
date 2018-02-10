@@ -185,7 +185,7 @@
         updateUser(data).then(res => {
           row.originalMobile = row.mobile
           this.$message({
-            message: 'The title has been edited',
+            message: '修改成功',
             type: 'success'
           })
         }).catch(err => {
