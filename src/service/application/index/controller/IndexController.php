@@ -30,19 +30,16 @@ class IndexController extends Controller
 	public function tt()
 	{
 		$param = handle_params([
-			'title'  => [],
-			'router' => [],
-			'sort'   => [0, 'abs'],
-			'pid'    => [0, 'abs'],
-			'status' => [0, 'int', false],
+			'id'        => [0, 'abs'],
+			'title'     => [],
+			'router'    => [],
+			'sort'      => [0, 'abs'],
+			'pid'       => [0, 'abs'],
+			'status'    => [0, 'int', false],
 			'group_ids' => []
 		]);
 
-		$validate = new MenuValidate();
-
-		if (!$validate->scene('update')->check($param)) {
-			print_r($validate->getError());
-		}
+		$aa = SystemService::updateMenu($param['id'], $param);
 		print_r($param);
 	}
 

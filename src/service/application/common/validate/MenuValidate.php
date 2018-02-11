@@ -18,7 +18,7 @@ class MenuValidate extends Validate
 		'id|ID'         => 'number|gt:0',
 		'pid|PID'       => 'checkPid',
 		'title|标题'      => 'require|max:50',
-		'router|路由地址'   => 'require|max:50|unique:app\\common\\model\\MenuModel,router',
+		'router|路由地址'   => 'require|max:50',
 		'sort|排序'       => 'number|between:0,99',
 		'status|状态'     => 'number|between:0,1',
 		'group_ids' => 'regex:/^[1-9]\d*(,[1-9]\d*)*$/'
@@ -27,9 +27,13 @@ class MenuValidate extends Validate
 	public function sceneUpdate()
 	{
 		return $this->append('id', 'checkId')
-					->remove('router', 'unique')
-					->remove('title', 'unique')
+					->remove('title', 'require')
+					->remove('router', 'require')
 					->append('router', 'checkRouter');
+	}
+
+	public function sceneAdd() {
+		return $this->append('router', 'unique:app\\common\\model\\MenuModel,router');
 	}
 
 	protected function checkId($val)
@@ -40,13 +44,16 @@ class MenuValidate extends Validate
 
 	protected function checkRouter($val, $roule, $data)
 	{
-		$model = new MenuModel();
-		$info = $model->where(['router' => $val])->find();
-		if ($info && $info['id'] == $data['id']) {
-			return true;
-		} else {
-			return '路由已存在';
+		if ($val) {
+			$model = new MenuModel();
+			$info = $model->where(['router' => $val])->find();
+			if ($info && $info['id'] == $data['id']) {
+				return true;
+			} else {
+				return '路由已存在';
+			}
 		}
+		return true;
 	}
 
 	protected function checkPid($val)

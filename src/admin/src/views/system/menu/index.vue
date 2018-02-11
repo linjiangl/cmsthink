@@ -34,8 +34,8 @@
         <template slot-scope="scope">
           <el-button-group>
             <el-button type="primary" size="mini">编辑</el-button>
-            <el-button type="danger" size="mini" v-if="scope.row.status == 1">禁用</el-button>
-            <el-button type="success" size="mini" v-else>启用</el-button>
+            <el-button type="danger" size="mini" @click="handleUpdate(scope.row, 0)" v-if="scope.row.status == 1">禁用</el-button>
+            <el-button type="success" size="mini" @click="handleUpdate(scope.row, 1)" v-else>启用</el-button>
           </el-button-group>
         </template>
       </el-table-column>
@@ -45,7 +45,7 @@
 
 <script>
   import treeTable from '@/components/TreeTable'
-  import { getMenu } from '@/api/system'
+  import { getMenu, updateMenu } from '@/api/system'
 
   export default {
     components: { treeTable },
@@ -72,6 +72,15 @@
             return v
           })
           this.listLoading = false
+        })
+      },
+      handleUpdate(data, status) {
+        let save = {
+          id: data.id,
+          status: status
+        }
+        updateMenu(save).then(res => {
+          data.status = status;
         })
       }
     }

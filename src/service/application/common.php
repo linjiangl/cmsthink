@@ -49,10 +49,13 @@ function build_url($url, Array $param, $type = 'api')
  *
  * @param $code
  * @param string $msg
+ * @param string $err
  */
-function http_error($code, $msg = '')
+function http_error($code, $msg = '', $err = '')
 {
-	json(['error' => $msg])->code($code)->send();
+	$data['error'] = $msg;
+	$err && $data['data'] = $err;
+	json($data)->code($code)->send();
 }
 
 /**
@@ -144,27 +147,33 @@ function handle_params($config = [], $method = 'post')
 		$param = request()->get('', null, 'trim');
 	}
 	$param = $param ? : [];
-	if ($config) {
-		foreach ($config as $k => $v) {
-			$param[$k] = isset($param[$k]) ? $param[$k] : '';
-			$v = $v ? : ['', 'str'];
-			switch ($v[1]) {
-				case 'int':
-					$v[2] = isset($v[2]) ? false : true; //false 不转化类型,输出空字符串
-					if ($v[2]) {
-						if ($param[$k] != '') {
-							$param[$k] = intval($param[$k]);
-						} else {
-							$param[$k] = intval($param[$k]) ? : $v[0];
-						}
+
+	if (isset($param['auth_token'])) {
+		unset($param['auth_token']);
+	}
+	if (!$config) {
+		return $param;
+	}
+
+	foreach ($config as $k => $v) {
+		$param[$k] = isset($param[$k]) ? $param[$k] : '';
+		$v = $v ? : ['', 'str'];
+		switch ($v[1]) {
+			case 'int':
+				$v[2] = isset($v[2]) ? false : true; //false 不转化类型,输出空字符串
+				if ($v[2] && $param[$k] == '') {
+					if ($param[$k] != '') {
+						$param[$k] = intval($param[$k]);
+					} else {
+						$param[$k] = intval($param[$k]) ? : $v[0];
 					}
-					break;
-				case 'abs':
-					$param[$k] = abs(intval($param[$k])) ? : $v[0];
-					break;
-				default:
-					$param[$k] = $param[$k] ? : $v[0];
-			}
+				}
+				break;
+			case 'abs':
+				$param[$k] = abs(intval($param[$k])) ? : $v[0];
+				break;
+			default:
+				$param[$k] = $param[$k] ? : $v[0];
 		}
 	}
 

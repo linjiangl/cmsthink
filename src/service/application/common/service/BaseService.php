@@ -129,6 +129,8 @@ class BaseService
 
 	protected static $code = '';
 
+	protected static $data = '';
+
 	public static function getError()
 	{
 		return self::$error;
@@ -139,9 +141,14 @@ class BaseService
 		return self::$code;
 	}
 
+	public static function getErrData()
+	{
+		return self::$data;
+	}
+
 	public static function setHttpMsg($code, $error = '')
 	{
-		self::$code = $code;
+		self::$code = $code ? : self::BAD_REQUEST;
 
 		if ($error) {
 			self::$error = $error;

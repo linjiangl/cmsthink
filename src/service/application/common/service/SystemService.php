@@ -90,7 +90,7 @@ class SystemService extends BaseService
 			'sort' => $sort
 		];
 		$validate = new MenuValidate();
-		if (!$validate->check($data)) {
+		if (!$validate->scene('add')->check($data)) {
 			self::setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
 			return false;
 		}
@@ -108,8 +108,19 @@ class SystemService extends BaseService
 		}
 
 		$save = [];
-		//$data['title'] =
-		$model = new MenuModel();
+		$data['title'] && $save['title'] = $data['title'];
+		$data['router'] && $save['router'] = $data['router'];
+		$data['pid'] && $save['pid'] = $data['pid'];
+		$data['sort'] && $save['sort'] = $data['sort'];
+		$data['status'] != '' && $save['status'] = $data['status'];
+		$data['group_ids'] && $save['auth_group_ids'] = $data['group_ids'];
+		if (!$save) {
+			self::setHttpMsg(self::UNPROCESSABLE_ENTITY, '参数错误');
+			return false;
+		}
 
+		unset($data['id']);
+		$model = new MenuModel();
+		return $model->modify($id, $save);
 	}
 }

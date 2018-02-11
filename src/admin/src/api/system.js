@@ -14,3 +14,8 @@ export function getMenu()
 {
   return request.post('system/getMenus')
 }
+
+export function updateMenu(data)
+{
+  return request.post('system/updateMenu', data)
+}

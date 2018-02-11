@@ -103,11 +103,11 @@ class SystemController extends AuthController
 			'group_ids' => []
 		]);
 
-		$result = SystemService::addMenu($param['title'], $param['router'], $param['pid'], $param['sort']);
+		$result = SystemService::updateMenu($param['id'], $param);
 		if ($result === false) {
 			http_error(SystemService::getCode(), SystemService::getError());
 		} else {
-			http_ok($result, 201);
+			http_ok();
 		}
 	}
 
