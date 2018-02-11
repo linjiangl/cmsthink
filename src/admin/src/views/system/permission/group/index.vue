@@ -2,19 +2,19 @@
   <div class="app-container calendar-list-container">
     <el-table :data="list" v-loading.body="listLoading" border fit highlight-current-row style="width: 100%">
 
-      <el-table-column align="center" label="ID" width="100">
+      <el-table-column align="center" label="ID">
         <template slot-scope="scope">
           <span>{{scope.row.id}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="120" align="center" label="PID">
+      <el-table-column  align="center" label="PID">
         <template slot-scope="scope">
           <span>{{scope.row.pid}}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="300" label="Title" align="center">
+      <el-table-column label="Title" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
             <el-input class="edit-input" size="small" v-model="scope.row.title"></el-input>
@@ -24,7 +24,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="240" align="center" label="Name">
+      <el-table-column align="center" label="Name">
         <template slot-scope="scope">
           <span>{{scope.row.name}}</span>
         </template>

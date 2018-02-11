@@ -4,28 +4,28 @@
       <el-button class="filter-item" type="primary" icon="el-icon-edit">创建</el-button>
     </div>
 
-    <tree-table :data="list" border>
-      <el-table-column label="Title" width="150" align="left">
+    <tree-table :data="list" border style="width: 100%">
+      <el-table-column label="Title" align="left">
         <template slot-scope="scope">
           <span>{{scope.row.title}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Router" width="200" align="left">
+      <el-table-column label="Router" align="left">
         <template slot-scope="scope">
           <span>{{scope.row.router}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Sort" width="80" align="center">
+      <el-table-column label="Sort" align="center">
         <template slot-scope="scope">
           <span>{{scope.row.sort}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Status" width="80" align="center">
+      <el-table-column label="Status" align="center">
         <template slot-scope="scope">
           <el-tag :type="status[scope.row.status].tag">{{status[scope.row.status].name}}</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="Groups" width="250" align="left">
+      <el-table-column label="Groups" align="left">
         <template slot-scope="scope">
           <span>{{scope.row.group_name}}</span>
         </template>

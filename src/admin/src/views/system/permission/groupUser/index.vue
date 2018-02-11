@@ -4,27 +4,24 @@
 
       <el-table-column
         type="index"
-        width="80"
         align="center">
       </el-table-column>
       <el-table-column
         property="group_id"
         label="GroupId"
-        width="120"
         align="center">
       </el-table-column>
       <el-table-column
         property="user_id"
         label="UserId"
-        width="120"
         align="center">
       </el-table-column>
-      <el-table-column align="center" label="GroupTitle" width="150">
+      <el-table-column align="center" label="GroupTitle">
         <template slot-scope="scope">
           <span>{{scope.row.auth_group.title}}</span>
         </template>
       </el-table-column>
-      <el-table-column width="300" align="center" label="Nickname">
+      <el-table-column align="center" label="Nickname">
         <template slot-scope="scope">
           <span>{{scope.row.user.nickname}}</span>
         </template>

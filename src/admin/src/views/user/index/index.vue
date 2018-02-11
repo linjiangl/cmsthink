@@ -28,9 +28,9 @@
         type="selection"
         width="36">
       </el-table-column>
-      <el-table-column prop="id" label="ID" width="80" align="center"></el-table-column>
-      <el-table-column prop="username" label="Username" width="150" align="center"></el-table-column>
-      <el-table-column prop="nickname" label="Nickname" width="200" align="center"></el-table-column>
+      <el-table-column prop="id" label="ID" align="center"></el-table-column>
+      <el-table-column prop="username" label="Username" align="center"></el-table-column>
+      <el-table-column prop="nickname" label="Nickname" align="center"></el-table-column>
       <el-table-column label="Mobile" width="200" align="center">
         <template slot-scope="scope">
           <template v-if="scope.row.edit">
@@ -40,10 +40,10 @@
           <span v-else @click='scope.row.edit=!scope.row.edit' >{{ scope.row.mobile }}</span>
         </template>
       </el-table-column>
-      <el-table-column label="Status" width="75">
+      <el-table-column label="Status">
         <span slot-scope="scope">{{handelStatus(scope.row.status)}}</span>
       </el-table-column>
-      <el-table-column label="Role" width="75">
+      <el-table-column label="Role">
         <span slot-scope="scope">{{handelRoles(scope.row.role)}}</span>
       </el-table-column>
       <el-table-column label="CreateTime" width="180">
