@@ -1,5 +1,5 @@
 <template>
-  <div>
+
     <el-dialog :title="textMap[digTitle]" :visible.sync="dialogTableVisible" @close="handleClose">
       <el-form :model="form" ref="userFrom" :rules="rules" label-width="70px" style='width: 400px; margin-left:50px;'>
         <el-form-item label="用户名" prop="username">
@@ -26,20 +26,14 @@
         <el-button @click="handleSaveData">确定</el-button>
       </div>
     </el-dialog>
-  </div>
+
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
   import { getUserInfo, register, updateUser } from '@/api/user'
 
   export default {
     props: ['digTitle', 'id'],
-    computed: {
-      ...mapGetters([
-        'isDialog'
-      ])
-    },
     data() {
       var checkMobile = (rule, value, callback) => {
         if (value && !/^1\d{10}$/.test(value)) {

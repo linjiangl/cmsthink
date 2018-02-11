@@ -98,4 +98,18 @@ class SystemService extends BaseService
 		$model = new MenuModel();
 		return $model->add($data);
 	}
+
+	public static function updateMenu($id, $data)
+	{
+		$validate = new MenuValidate();
+		if (!$validate->scene('update')->check($data)) {
+			self::setHttpMsg(self::UNPROCESSABLE_ENTITY, $validate->getError());
+			return false;
+		}
+
+		$save = [];
+		//$data['title'] =
+		$model = new MenuModel();
+
+	}
 }

@@ -128,7 +128,8 @@ function base64_urlSafeDecode($str)
  * $config = [
  *        'page' => [1, 'abs'],
  *        'title' => [], //['', 'str']
- *        'id' => [0, 'int']
+ *        'id' => [0, 'int'],
+ * 		  'status' => [0, 'int', false]
  * ]
  *
  * @param array $config
@@ -149,10 +150,13 @@ function handle_params($config = [], $method = 'post')
 			$v = $v ? : ['', 'str'];
 			switch ($v[1]) {
 				case 'int':
-					if ($param[$k] != '') {
-						$param[$k] = intval($param[$k]);
-					} else {
-						$param[$k] = intval($param[$k]) ? : $v[0];
+					$v[2] = isset($v[2]) ? false : true; //false 不转化类型,输出空字符串
+					if ($v[2]) {
+						if ($param[$k] != '') {
+							$param[$k] = intval($param[$k]);
+						} else {
+							$param[$k] = intval($param[$k]) ? : $v[0];
+						}
 					}
 					break;
 				case 'abs':

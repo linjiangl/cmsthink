@@ -29,7 +29,9 @@ class IndexController extends BaseController
 		$avatar->Output2Browser();
 		$content = ob_get_clean();
 		$avatar->Free();
+		ob_end_flush();
 
 		return response($content, 200, ['Content-Length' => strlen($content), 'Cache-Control' => 'max-age=86400'])->contentType('image/png');
 	}
+
 }

@@ -81,7 +81,25 @@ class MenuModel extends BaseModel
 				break;
 		}
 
-		return $this->where($where)->order('sort', 'asc')->select()->toArray();
+		$list = $this->where($where)->order('sort', 'asc')->select()->toArray();
+		if ($list) {
+			$model = new AuthGroupModel();
+			$groups = $model->authGroups(-1);
+			$groups = array_combine(array_column($groups, 'id'), array_column($groups, 'name'));
+			foreach ($list as $k => $v) {
+				$v['group_name'] = [];
+				if ($v['auth_group_ids']) {
+					$v['auth_group_ids'] = explode(',', $v['auth_group_ids']);
+					foreach ($v['auth_group_ids'] as $vv) {
+						$v['group_name'][] = $groups[$vv];
+					}
+				}
+				$v['group_name'] = $v['group_name'] ? implode(',', $v['group_name']) : '';
+				$list[$k] = $v;
+			}
+		}
+
+		return $list;
 	}
 
 
