@@ -17,7 +17,8 @@ $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 $allowOrigin = [
 	'http://192.168.1.222:8089',
 	'http://localhost:8089',
-	'http://dist.exp'
+	'http://dist.exp',
+	'http://yii.date',
 ];
 if (in_array($origin, $allowOrigin)) {
 	header("Access-Control-Allow-Origin: {$origin}");
