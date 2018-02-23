@@ -16,7 +16,6 @@ header('X-Frame-Options: deny');
 $origin = isset($_SERVER['HTTP_ORIGIN']) ? $_SERVER['HTTP_ORIGIN'] : '';
 $allowOrigin = [
 	'http://192.168.1.222:8089',
-	'http://localhost:63342',
 	'http://localhost:8089',
 	'http://dist.exp'
 ];
