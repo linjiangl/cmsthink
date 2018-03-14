@@ -22,7 +22,11 @@ class FootballScheduleLibs
 	public function lists($search = [])
 	{
 		if ($search) {
-			$ids = $this->redis->sInter(...$search);
+			$where = [];
+			foreach ($search as $k => $v) {
+				$where[] = $this->handelSearchIndex($k, $v);
+			}
+			$ids = $this->redis->sInter(...$where);
 		} else {
 			$ids = $this->redis->sMembers($this->index);
 		}
@@ -89,19 +93,6 @@ class FootballScheduleLibs
 		$this->setSearch($this->info($id), 'rm');
 		$this->redis->hDel($hIndex, ...$hKeys);
 		$this->redis->sRem($this->index, $id);
-
-		return true;
-	}
-
-	protected function setSearch($data, $type = 'add')
-	{
-		switch ($type) {
-			case 'rm':
-				$this->redis->sRem($this->handelSearchIndex('status', $data['status']), $data['game_id']);
-				break;
-			default:
-				$this->redis->sAdd($this->handelSearchIndex('status', $data['status']), $data['game_id']);
-		}
 	}
 
 	public function handleApiData($apiData)
@@ -110,7 +101,8 @@ class FootballScheduleLibs
 			'id'     => 'game_id',
 			'status' => 'status',
 			'rank'   => 'home_rank',
-			'dian'   => 'home_dian'
+			'dian'   => 'home_dian',
+			'date'   => 'date',
 		];
 
 		$data = [];
@@ -121,11 +113,33 @@ class FootballScheduleLibs
 		return $data;
 	}
 
+	protected function setSearch($data, $type = 'add')
+	{
+		if (!$data) {
+			return false;
+		}
+
+		$status = $this->handelSearchIndex('status', $data['status']);
+		$date = $this->handelSearchIndex('date', $data['date']);
+		switch ($type) {
+			case 'rm':
+				$this->redis->sRem($status, $data['game_id']);
+				$this->redis->sRem($date, $data['game_id']);
+				break;
+			default:
+				$this->redis->sAdd($status, $data['game_id']);
+				$this->redis->sAdd($date, $data['game_id']);
+		}
+	}
+
 	protected function handelSearchIndex($type, $val)
 	{
 		switch ($type) {
 			case 'status':
 				$index = $this->index . ':search:status:' . $val;
+				break;
+			case 'date':
+				$index = $this->index . ':search:date:' . $val;
 				break;
 			default:
 				$index = '';

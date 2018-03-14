@@ -17,13 +17,13 @@ class TestController extends Controller
 	public function index()
 	{
 		$libs = new FootballScheduleLibs();
-		$rs = $libs->add($this->apiData());
+		//$rs = $libs->add($this->apiData());
 
-		//$rs = $libs->info(11028);
+		//$rs = $libs->info(11030);
 
-		//$rs = $libs->lists();
+		$rs = $libs->lists(['date' => '20010']);
 
-		//$rs = $libs->rm(11028);
+		//$libs->rm(11030);
 
 		//$rs = $libs->save($this->apiData());
 		dump($rs);
@@ -42,10 +42,11 @@ class TestController extends Controller
 	protected function apiData()
 	{
 		return [
-			'id' => 11028,
-			'status' => 3,
+			'id' => 11032,
+			'status' => 4,
 			'rank' => 2,
-			'dian' => 0
+			'dian' => 0,
+			'date' => '20011'
 		];
 	}
 }
