@@ -119,16 +119,17 @@ class FootballScheduleLibs
 			return false;
 		}
 
-		$status = $this->handelSearchIndex('status', $data['status']);
-		$date = $this->handelSearchIndex('date', $data['date']);
+		$search = ['status', 'date'];
 		switch ($type) {
 			case 'rm':
-				$this->redis->sRem($status, $data['game_id']);
-				$this->redis->sRem($date, $data['game_id']);
+				foreach ($search as $v) {
+					$this->redis->sRem($this->handelSearchIndex($v, $data[$v]), $data['game_id']);
+				}
 				break;
 			default:
-				$this->redis->sAdd($status, $data['game_id']);
-				$this->redis->sAdd($date, $data['game_id']);
+				foreach ($search as $v) {
+					$this->redis->sAdd($this->handelSearchIndex($v, $data[$v]), $data['game_id']);
+				}
 		}
 	}
 
