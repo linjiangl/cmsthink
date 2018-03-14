@@ -78,7 +78,7 @@ DROP TABLE IF EXISTS `think_auth_group_access`;
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
  */
 
-class Auth
+class AuthLibs
 {
     /**
      * @var object 对象实例
