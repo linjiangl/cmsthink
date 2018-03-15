@@ -1,4 +1,7 @@
-### 简单的cms系统,供学习用
+### cmsthink
+
+> 服务端接口采用rest风格, 框架thinkphp 5.1
+> 后端框架vue-element框架
 
 ~~~
 cmsthink 项目目录
