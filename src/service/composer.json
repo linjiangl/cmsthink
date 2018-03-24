@@ -20,7 +20,9 @@
         "topthink/framework": "5.1.*",
         "topthink/think-migration": "^2.0",
         "topthink/think-captcha": "^2.0",
-        "lincanbin/material-design-avatars": "^1.4"
+        "lincanbin/material-design-avatars": "^1.4",
+        "workerman/gateway-worker": "^3.0",
+        "workerman/gatewayclient": "^3.0"
     },
     "autoload": {
         "psr-4": {

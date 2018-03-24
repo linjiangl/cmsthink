@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <meta http-equiv="Cache-Control" content="max-age=0">
+    <meta name="apple-touch-fullscreen" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>聊天室</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/qq.css"/>
+</head>
+<body>
+<div class="qqBox">
+    <div class="context">
+        <div class="conRight">
+            <div class="Righthead">
+                <div class="headName">doubi.site 总人数<span id="total">0</span></div>
+
+            </div>
+            <div class="RightCont">
+                <div class="ChatRecord">查看更多消息</div>
+                <ul class="newsList">
+
+                </ul>
+            </div>
+            <div class="RightFoot">
+                <div class="inputBox">
+                    <textarea id="dope" style="width: 99%;height: 48px; border: none;outline: none;" name="" rows=""
+                              cols=""></textarea>
+                    <button class="sendBtn">发送(s)</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script type="text/javascript" src="/static/js/swfobject.js"></script>
+<script type="text/javascript" src="/static/js/web_socket.js"></script>
+<script type="text/javascript" src="/static/js/jquery.min.js"></script>
+<script type="text/javascript" src="/static/js/moment.min.js"></script>
+
+<script type="text/javascript">
+    if (typeof console == "undefined") {
+        this.console = {
+            log: function (msg) {
+            }
+        };
+    }
+    WEB_SOCKET_SWF_LOCATION = "/swf/WebSocketMain.swf";
+    WEB_SOCKET_DEBUG = true;
+    var ws = new WebSocket("ws://192.168.1.222:11200");
+    var client_id = '';
+    var user_id = "{$param['uid']}";
+    var group_id = "{$param['rid']}";
+    ws.onmessage = function (e) {
+        // json数据转换成js对象
+        var data = eval("(" + e.data + ")");
+        var type = data.type || '';
+        switch (type) {
+            case 'ping':
+                ws.send('{"type":"pong"}');
+                break;
+            case 'init':
+                client_id = data.client_id;
+                var param = {
+                    type: 'login',
+                    client_id: client_id,
+                    user_id: user_id,
+                    group_id: group_id
+                };
+                $.post('/test/chat', param, function (res) {}, 'json');
+                break;
+            case 'login':
+                handle_login(data);
+                break;
+            default :
+                handle_say(data);
+        }
+    };
+
+    $(".sendBtn").bind("click", function () {
+        var msg = $('#dope').val();
+        if (msg === '') {
+            return;
+        }
+        $('#dope').val('');
+
+        var param = {
+            type: 'say',
+            client_id: client_id,
+            user_id: user_id,
+            group_id: group_id,
+            message: msg
+        };
+        $.post('/test/chat', param, function (res) {}, 'json');
+    })
+
+    function handle_login(data) {
+        template(data);
+    }
+
+    function handle_say(data) {
+        template(data);
+    }
+
+    function template(data) {
+        var html = '';
+        var list = data.msgList;
+        for (var i in list) {
+            html += ' <li>\n' +
+'                        <div class="answerHead">\n' +
+'                            <img src="'+list[i].user.avatar+'">\n' +
+'                            <div>\n' +
+'                                <p class="nickname">'+list[i].user.nickname+'</p>\n' +
+'                                <p class="time">'+date_format(list[i].time)+'</p>\n' +
+'                            </div>\n' +
+'                        </div>\n' +
+'                        <div class="answers">' + list[i].content + '</div>\n' +
+'                    </li>';
+        }
+        $("#total").html(data.count);
+        $('.newsList').append(html);
+    }
+
+    function date_format(time){
+        time = time * 1000;
+        return moment(time).format("YYYY-MM-DD hh:mm:ss");
+    }
+
+</script>
+</html>

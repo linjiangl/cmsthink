@@ -95,8 +95,8 @@ class UserService extends BaseService
 			$info['avatar'] = $info['avatar'] ? : get_avatar_url($info['nickname']);
 
 			//记录登录状态,检查登录用
-			AuthCache::setAuth($authKey, $info->toArray());
-			AuthCache::rmAuth($oldAuthKey);
+			AuthCache::set($authKey, $info->toArray());
+			AuthCache::rm($oldAuthKey);
 
 			return $authKey;
 		} else {
@@ -114,7 +114,7 @@ class UserService extends BaseService
 	 */
 	public static function logout($authKey)
 	{
-		return AuthCache::rmAuth($authKey);
+		return AuthCache::rm($authKey);
 	}
 
 	/**

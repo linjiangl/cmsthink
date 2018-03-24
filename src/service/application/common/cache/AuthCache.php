@@ -9,26 +9,27 @@
 
 namespace app\common\cache;
 
-use think\facade\Cache;
 
 class AuthCache extends BaseCache
 {
-	public static function setAuth($authKey, $user)
+	public static function getKey($key)
 	{
-		$index = "user:auth_key:" . $authKey;
-		Cache::set($index, $user, self::expire());
+		return 'user:auth_key:' . $key;
+	}
+
+	public static function set($authKey, $user)
+	{
+		self::setCache(self::getKey($authKey), $user);
 		return $authKey;
 	}
 
-	public static function getAuth($authKey)
+	public static function get($authKey)
 	{
-		$index = "user:auth_key:" . $authKey;
-		return Cache::get($index);
+		return self::getCache(self::getKey($authKey));
 	}
 
-	public static function rmAuth($authKey)
+	public static function rm($authKey)
 	{
-		$index = "user:auth_key:" . $authKey;
-		return Cache::rm($index);
+		self::rmCache(self::getKey($authKey));
 	}
 }

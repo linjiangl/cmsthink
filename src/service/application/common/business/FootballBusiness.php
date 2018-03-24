@@ -6,7 +6,7 @@
  * Created by linjiangl
  */
 
-namespace common\business;
+namespace app\common\business;
 
 use cache\FootballComCache;
 use cache\FootballTeamsCache;
