@@ -37,8 +37,7 @@ class AuthController extends BaseController
 	{
 		$authKey = $this->request->request('auth_token', '', 'trim');
 		$this->authKey = $authKey;
-		$authCache = new AuthCache();
-		if ($user = $authCache->getAuth($authKey)) {
+		if ($user = AuthCache::getCache($authKey)) {
 			$this->user = $user;
 		} else {
 			http_error(401, '验证失败');

@@ -10,26 +10,66 @@
 namespace app\common\cache;
 
 use think\facade\Cache;
+use think\facade\Config;
 
 class BaseCache
 {
+	/**
+	 * 缓存有效期
+	 * @var int
+	 */
 	protected static $expire = 86400;
 
+	/**
+	 * 设置缓存
+	 * @param $key
+	 * @param $data
+	 * @return bool|mixed
+	 */
 	public static function setCache($key, $data)
 	{
-		return self::cache($key, $data, 'set');
+		return self::cache(self::getKey($key), $data, 'set');
 	}
 
+	/**
+	 * 获取缓存
+	 * @param $key
+	 * @return bool|mixed
+	 */
 	public static function getCache($key)
 	{
-		return self::cache($key);
+		return self::cache(self::getKey($key));
 	}
 
+	/**
+	 * 删除缓存
+	 * @param $key
+	 * @return bool|mixed
+	 */
 	public static function rmCache($key)
 	{
-		return self::cache($key, '', 'rm');
+		return self::cache(self::getKey($key), '', 'rm');
 	}
 
+	/**
+	 * 获取缓存键
+	 * @param $index
+	 * @return mixed
+	 */
+	public static function getKey($index)
+	{
+		return $index;
+	}
+
+	/**
+	 * 获取缓存有效期
+	 * @return int
+	 */
+	public static function expire()
+	{
+		$expire = Config::get('cache.expire');
+		return $expire ? : self::$expire;
+	}
 
 	/**
 	 * 全局缓存
@@ -45,7 +85,7 @@ class BaseCache
 				$result = $data;
 				Cache::set($index, $data, self::expire());
 				break;
-			case 'del':
+			case 'rm':
 				$result = Cache::rm($index);
 				break;
 			default:
@@ -53,10 +93,5 @@ class BaseCache
 		}
 
 		return $result;
-	}
-
-	public static function expire()
-	{
-		return self::$expire;
 	}
 }

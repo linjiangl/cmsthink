@@ -20,11 +20,10 @@ class UserCache extends BaseCache
 
 	public static function get($userId)
 	{
-		$key = self::getKey($userId);
-		$info = self::getCache($key);
+		$info = self::getCache($userId);
 		if (empty($info)) {
 			$info = UserService::info($userId);
-			self::setCache($key, $info);
+			self::setCache($userId, $info);
 		}
 		return $info ? : [];
 	}
