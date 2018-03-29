@@ -28,16 +28,21 @@ class RedisLibs
 		'password'   => '',
 		'select'     => 0,
 		'timeout'    => 0,
-		'expire'     => 0,
 		'persistent' => false,
-		'prefix'     => '',
 		'serialize'  => true,
 	];
 
 	final protected function __construct() { }
 
-	public static function instance()
+	public static function instance($option = [])
 	{
+		if (!empty($option)) {
+			isset($option['host']) && self::$options['host'] = $option['host'];
+			isset($option['port']) && self::$options['port'] = $option['port'];
+			isset($option['password']) && self::$options['password'] = $option['password'];
+			isset($option['select']) && self::$options['select'] = $option['select'];
+			isset($option['timeout']) && self::$options['timeout'] = $option['timeout'];
+		}
 		if (self::$ins == null) {
 			self::$ins = new \Redis;
 			self::$ins->connect(self::$options['host'], self::$options['port'], self::$options['timeout']);
@@ -46,5 +51,5 @@ class RedisLibs
 		return self::$ins;
 	}
 
-	final protected function __clone() {}
+	final protected function __clone() { }
 }
