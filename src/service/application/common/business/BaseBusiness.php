@@ -8,7 +8,7 @@
 
 namespace app\common\business;
 
-use app\common\libs\RedisLibs;
+use app\common\library\RedisLibrary;
 use think\exception\HttpException;
 
 class BaseBusiness
@@ -21,7 +21,7 @@ class BaseBusiness
 
 	public function __construct()
 	{
-		$this->redis = RedisLibs::instance();
+		$this->redis = RedisLibrary::instance();
 	}
 
 	/**

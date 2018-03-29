@@ -1,12 +1,12 @@
 <?php
 /**
- * RedisLibs.php
+ * RedisLibrary.php
  * ---
  * Created on 2018/3/14 下午2:54
  * Created by linjiangl
  */
 
-namespace app\common\libs;
+namespace app\common\library;
 
 
 /**
@@ -15,7 +15,7 @@ namespace app\common\libs;
  *
  * @package app\common\libs
  */
-class RedisLibs
+class RedisLibrary
 {
 	/**
 	 * @var \Redis

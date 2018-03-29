@@ -10,7 +10,7 @@
 // +----------------------------------------------------------------------
 // | 修改者: anuo (本权限类在原3.2.3的基础上修改过来的)
 // +----------------------------------------------------------------------
-namespace app\common\libs;
+namespace app\common\library;
 
 use think\Db;
 use think\Loader;
@@ -78,7 +78,7 @@ DROP TABLE IF EXISTS `think_auth_group_access`;
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
  */
 
-class AuthLibs
+class AuthLibrary
 {
     /**
      * @var object 对象实例
