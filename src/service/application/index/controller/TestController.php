@@ -13,7 +13,7 @@ use app\common\business\ChatBusiness;
 use think\Controller;
 use GatewayClient\Gateway;
 
-class ChatController extends Controller
+class TestController extends Controller
 {
 	public function index()
 	{
@@ -42,6 +42,7 @@ class ChatController extends Controller
 		]);
 
 		$chat = new ChatBusiness();
+//		Gateway::$registerAddress = '116.62.161.206:11100';
 		Gateway::$registerAddress = '192.168.1.222:11100';
 
 		switch ($param['type']) {
