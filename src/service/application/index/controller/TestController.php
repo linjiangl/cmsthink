@@ -12,6 +12,8 @@ use app\common\cache\UserCache;
 use app\common\business\ChatBusiness;
 use think\Controller;
 use GatewayClient\Gateway;
+use think\facade\Cache;
+use think\facade\Config;
 
 class TestController extends Controller
 {
@@ -28,7 +30,11 @@ class TestController extends Controller
 
 	public function ttt()
 	{
-		dump(UserCache::get(104));
+		//$cache = new Cache();
+		//dump($cache::handler());
+		//dump(Config::get('cache.'));
+		//Cache::set('aa', 'bb');
+		dump(Cache::get('aa'));
 	}
 
 	public function chat()

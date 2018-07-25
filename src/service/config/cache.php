@@ -17,12 +17,14 @@ use think\facade\Env;
 
 return [
 	// 驱动方式
-	'type'     => 'Redis',
+	'type'     => Env::get('cache.type', ''),
 	// 缓存前缀
-	'prefix'   => Env::get('redis.type', ''),
+	'prefix'   => Env::get('cache.prefix', ''),
 	// 缓存有效期 0表示永久缓存
-	'expire'   => Env::get('redis.expire', 3600),
-	'host'     => Env::get('redis.host', '127.0.0.1'),
-	'port'     => Env::get('redis.port', 6379),
-	'select'   => Env::get('redis.select', 0),
+	'expire'   => Env::get('cache.expire', 3600),
+	'host'     => Env::get('cache.host', '127.0.0.1'),
+	'port'     => Env::get('cache.port', 6379),
+	'select'   => Env::get('cache.select', 0),
 ];
+
+
